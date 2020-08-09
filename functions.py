@@ -1,3 +1,4 @@
+import os
 from flask import Flask ,  render_template, request , session , redirect , url_for,flash
 import pandas as pd
 import numpy as np
@@ -10,9 +11,9 @@ def rmse(y_true,y_pred):
     return np.sqrt(mean_squared_error(y_true,y_pred))
 tester=[6630,2919,0.42116,51,90000,40]
 def tumor_size(tester):
-	train = pd.read_csv('Train.csv')
-	test = pd.read_csv('Test.csv')
-	sample = pd.read_csv('sample_submission.csv')
+	train = pd.read_csv(os.path.join(os.path.dirname(__file__), 'Train.csv'))
+	test = pd.read_csv(os.path.join(os.path.dirname(__file__), 'Test.csv'))
+	sample = pd.read_csv(os.path.join(os.path.dirname(__file__), 'sample_submission.csv'))
 	X = train.drop(['tumor_size','std_dev_malign', 'err_malign', 'malign_penalty'],axis=1)
 	y = train['tumor_size'].copy()
 	
