@@ -61,8 +61,8 @@ def tumor_size(tester):
 
 
 def predict_cancer(image):
-	print(image)
-	model = load_learner(os.path.join(os.path.dirname(__file__), 'large_files/'))
+	print(os.path.join(os.path.dirname(__file__),'uploads/'+image)
+	model = load_learner('large_files/cancer_classifier.pkl'))
 	dataset=['Negative','Positive']
 	img=open_image(os.path.join(os.path.dirname(__file__),'uploads/'+image))
 	tens=learn.predict(img)[-1].numpy()
