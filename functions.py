@@ -62,11 +62,11 @@ def tumor_size(tester):
 
 def predict_cancer(image):
 	print(os.path.join(os.path.dirname(__file__),'uploads/'+image))
-	model = load_learner('large_files/cancer_classifier.pkl')
+	model = load_learner('large_files/')
 	dataset=['Negative','Positive']
 	img=open_image(os.path.join(os.path.dirname(__file__),'uploads/'+image))
-	tens=learn.predict(img)[-1].numpy()
-	tens1=learn.predict(img)[-1].numpy()
+	tens=model.predict(img)[-1].numpy()
+	tens1=model.predict(img)[-1].numpy()
 	return('Predicted'+str(dataset[np.argmax(tens1)])+'with probability '+str(np.max(tens1)))
 def upload_file(file):
 	file.save('uploads/'+secure_filename(file.filename))
