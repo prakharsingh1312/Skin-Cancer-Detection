@@ -6,8 +6,8 @@ from sklearn.ensemble import ExtraTreesRegressor
 from sklearn.model_selection import StratifiedKFold, KFold
 from sklearn.metrics import mean_squared_error
 import pickle
-#from fastai import *
-#from fastai.vision import *
+from fastai import *
+from fastai.vision import *
 from werkzeug.utils import secure_filename
 
 def rmse(y_true,y_pred):
@@ -61,14 +61,14 @@ def tumor_size(tester):
 
 
 def predict_cancer(image):
-	model = load_learner(os.path.join(os.path.dirname(__file__), 'large_files/cancer_classifier.pkl'))
+	model = load_learner(os.path.join(os.path.dirname(__file__), 'large_files/'))
 	dataset=['Negative','Positive']
 	img=open_image(os.path.join(os.path.dirname(__file__),'uploads/'+image))
 	tens=learn.predict(img)[-1].numpy()
 	tens1=learn.predict(img)[-1].numpy()
 	return('Predicted'+str(dataset[np.argmax(tens1)])+'with probability '+str(np.max(tens1)))
 def upload_file(file):
-	file.save(secure_filename(file.filename))
+	file.save('uploads/'+secure_filename(file.filename))
 	return file.filename
 
 
