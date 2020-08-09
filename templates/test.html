@@ -12,7 +12,12 @@
 		<input type="text" name="damage" placeholder="Damage Size"><br>
 		<input type="text" name="exparea" placeholder="Exposed Area"><br>
 		<input type="text" name="dratio" placeholder="Damage Ratio"><br>
-		<input type="submit" name="Submit" value="submit"> 
+		<input type="submit" name="submit" value="tumor_size"> 
 	</form>
+	<br><br><br>
+	<form action = "" method = "POST" enctype = "multipart/form-data">
+         <input type = "file" name = "image" accept="image/*" />
+         <input type = "submit" name="submit" value="predict_cancer" />
+      </form>
 </body>
 </html>
