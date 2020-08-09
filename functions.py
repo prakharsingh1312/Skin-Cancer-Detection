@@ -61,6 +61,7 @@ def tumor_size(tester):
 
 
 def predict_cancer(image):
+        print(image)
 	model = load_learner(os.path.join(os.path.dirname(__file__), 'large_files/'))
 	dataset=['Negative','Positive']
 	img=open_image(os.path.join(os.path.dirname(__file__),'uploads/'+image))
