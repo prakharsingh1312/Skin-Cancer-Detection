@@ -15,6 +15,20 @@
               <p>Dashboard</p>
             </a>
           </li>
+            {% if 'login' in session %}
+            <li class="nav-item ">
+            <a class="nav-link" href="./login">
+              <i class="material-icons">person</i>
+              <p>Login</p>
+            </a>
+          </li>
+          <li class="nav-item ">
+            <a class="nav-link" href="./signup">
+              <i class="material-icons">content_paste</i>
+              <p>SignUp</p>
+            </a>
+          </li>
+            {% else %}
           <li class="nav-item ">
             <a class="nav-link" href="./user.html">
               <i class="material-icons">person</i>
@@ -57,12 +71,15 @@
               <p>RTL Support</p>
             </a>
           </li>
+            {% endif %}
+<!--
           <li class="nav-item active-pro ">
             <a class="nav-link" href="./upgrade.html">
               <i class="material-icons">unarchive</i>
               <p>Upgrade to PRO</p>
             </a>
           </li>
+-->
         </ul>
       </div>
     </div>

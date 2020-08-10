@@ -24,7 +24,15 @@ class Test_Graphs(db.Model):
 	benign_malignant=db.Column('benign_malignant' , db.String(9))
 	target=db.Column('target' , db.Integer)
 	
-
+class UserTable(db.Model):
+    __tablename__='user_table'
+    id=db.Column('id', db.Integer, primary_key=True)
+    name=db.Column('name' , db.String(100))
+    email=db.Column('email' , db.String(100))
+    #location=db.Column('location' , db.String(100))
+    gender=db.Column('gender' , db.String(1))
+    dob=db.Column('dob', db.Date)
+    
 #Functions
 
 #Tumor Prediction
