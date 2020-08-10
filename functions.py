@@ -1,5 +1,6 @@
+from config import *
 import os
-from flask import Flask ,  render_template, request , session , redirect , url_for,flash
+from flask import  render_template, request , session , redirect , url_for,flash
 import pandas as pd
 import numpy as np
 from sklearn.ensemble import ExtraTreesRegressor
@@ -10,6 +11,24 @@ from fastai import *
 from fastai.vision import *
 from werkzeug.utils import secure_filename
 
+#Tables
+
+class Test_Graphs(db.Model):
+	__tablename__='TABLE 1'
+	id=db.Column('id', db.Integer , primary_key=True)
+	name=db.Column('image_name' , db.String(12))
+	patient_id=db.Column('patient_id' , db.String(10))
+	sex=db.Column('sex' , db.String(6))
+	age_approx=db.Column('age_approx' , db.String(3))
+	anatom_site_general_challenge=db.Column('anatom_site_general_challenge' , db.String(15))
+	diagnosis=db.Column('diagnosis' , db.String(34))
+	benign_malignant=db.Column('benign_malignant' , db.String(9))
+	target=db.Column('target' , db.Integer)
+	
+
+#Functions
+
+#Tumor Prediction
 def rmse(y_true,y_pred):
     return np.sqrt(mean_squared_error(y_true,y_pred))
 #tester=[6630,2919,0.42116,51,90000,40]
@@ -59,7 +78,7 @@ def tumor_size(tester):
 
 	return (model.predict(tester)[0])
 
-
+#Cancer Prediction
 def predict_cancer(image):
 	print(os.path.join(os.path.dirname(__file__),'uploads/'+image))
 	model = load_learner('large_files/')
@@ -68,9 +87,14 @@ def predict_cancer(image):
 	tens=model.predict(img)[-1].numpy()
 	tens1=model.predict(img)[-1].numpy()
 	return('Predicted'+str(dataset[np.argmax(tens1)])+'with probability '+str(np.max(tens1)))
+
+
+
 def upload_file(file):
 	file.save('uploads/'+secure_filename(file.filename))
 	return file.filename
 
 
 #print(tumor_size(tester))
+#Charts Data
+def 

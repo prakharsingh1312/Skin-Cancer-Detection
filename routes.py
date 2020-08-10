@@ -1,8 +1,5 @@
 from functions import *
-app = Flask(__name__)
-app.config['UPLOAD_FOLDER']=os.path.join(os.path.dirname(__file__), '/uploads/')
-app.config['MAX_CONTENT_PATH']=1024
-@app.route("/", methods=['GET', 'POST'])
+@app.route("/test", methods=['GET', 'POST'])
 def home():
 	if request.method == 'POST':
 		if request.form['submit']=="tumor_size":
@@ -18,3 +15,9 @@ def home():
 			return predict_cancer(upload_file(request.files['image']))
 
 	return render_template("test.html")
+@app.route("/",methods=['GET', 'POST'])
+def dash():
+	title="Skin Cancer Detection"
+	page="Skin Cancer Detection"
+	user="Not Logged In"
+	return(render_template("index.html",title=title,page=page,user=user ))
