@@ -26,7 +26,7 @@ def dashboard_page():
     return(render_template("index.html",title=title,page=page,user=user))
 @app.route("/login" , methods=['GET' , 'POST'])
 def login_page():
-    title="Login|Skin Cancer Detection"
+    title="Login | Skin Cancer Detection"
     page="Login"
     user="Not Logged In"
     err=0
@@ -45,7 +45,7 @@ def login_page():
     return render_template('login-page.html',title=title,page=page,login=dologin,user=user)
 @app.route("/signup" , methods=['GET' , 'POST'])
 def signup_page():
-    title="SignUp|Skin Cancer Detection"
+    title="SignUp | Skin Cancer Detection"
     page="SignUp"
     user="Not Logged In"
     if 'user_id' in session:

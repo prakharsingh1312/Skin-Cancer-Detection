@@ -32,6 +32,8 @@ class UserTable(db.Model):
     #location=db.Column('location' , db.String(100))
     gender=db.Column('gender' , db.String(1))
     dob=db.Column('dob', db.Date)
+    password=db.Column('password',db.String(100))
+    role=db.Column('role',db.Integer)
     
 #Functions
 
