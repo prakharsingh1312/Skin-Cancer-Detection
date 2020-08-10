@@ -17,45 +17,45 @@ def home():
 	return render_template("test.html")
 @app.route("/",methods=['GET', 'POST'])
 def dashboard_page():
-	title="Skin Cancer Detection"
-	page="Skin Cancer Detection"
+    title="Skin Cancer Detection"
+    page="Skin Cancer Detection"
     if 'user_id' not in session:
-	   user="Not Logged In"
+        user="Not Logged In"
     else:
         user=session['user_name']
-	return(render_template("index.html",title=title,page=page,user=user ))
+        return(render_template("index.html",title=title,page=page,user=user))
 @app.route("/login" , methods=['GET' , 'POST'])
 def login_page():
     title="Login|Skin Cancer Detection"
-	page="Login"
+    page="Login"
     user="Not Logged In"
-	err=0;
-	dologin = -1
-	if 'login' in session:
-		dologin=session['login']
-		session.pop('login',None)
-	elif 'user_id' in session:
-		return redirect(url_for('dashboard_page'))
-	elif request.method == 'POST':
-		email=request.form['email']
-		password=request.form['password']
-		dologin = login(email , password)
-		if dologin == 1:
-			return redirect(url_for('dashboard_page'))
-	return render_template('login-page.html',title=title,page=page,login=dologin,user=user)
+    err=0
+    dologin = -1
+    if 'login' in session:
+        dologin=session['login']
+        session.pop('login',None)
+    elif 'user_id' in session:
+        return redirect(url_for('dashboard_page'))
+    elif request.method == 'POST':
+        email=request.form['email']
+        password=request.form['password']
+        dologin = login(email , password)
+        if dologin == 1:
+            return redirect(url_for('dashboard_page'))
+    return render_template('login-page.html',title=title,page=page,login=dologin,user=user)
 @app.route("/signup" , methods=['GET' , 'POST'])
 def signup_page():
     title="SignUp|Skin Cancer Detection"
-	page="SignUp"
+    page="SignUp"
     user="Not Logged In"
-	if 'user_id' in session:
-		return redirect(url_for('dashboard_page'))
-	elif request.method == 'POST':
-		name = request.form['name']
-		password = request.form['password']
-		email = request.form['email']
-		password = crypt_password(password)
-		if signup(name,password,email):
-			session['login']=3
-			return redirect(url_for('login_page'))
-	return render_template('signup-page.html',title=title,page=page,user=user)
+    if 'user_id' in session:
+        return redirect(url_for('dashboard_page'))
+    elif request.method == 'POST':
+        name = request.form['name']
+        password = request.form['password']
+        email = request.form['email']
+        password = crypt_password(password)
+        if signup(name,password,email):
+            session['login']=3
+            return redirect(url_for('login_page'))
+    return render_template('signup-page.html',title=title,page=page,user=user)
