@@ -97,4 +97,4 @@ def upload_file(file):
 
 #print(tumor_size(tester))
 #Charts Data
-def 
+#def 
