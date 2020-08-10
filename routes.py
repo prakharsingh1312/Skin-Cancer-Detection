@@ -23,7 +23,7 @@ def dashboard_page():
         user="Not Logged In"
     else:
         user=session['user_name']
-        return(render_template("index.html",title=title,page=page,user=user))
+    return(render_template("index.html",title=title,page=page,user=user))
 @app.route("/login" , methods=['GET' , 'POST'])
 def login_page():
     title="Login|Skin Cancer Detection"
