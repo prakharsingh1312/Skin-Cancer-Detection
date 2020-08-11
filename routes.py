@@ -42,14 +42,14 @@ def login_page():
 		dologin = login(email , password)
 		if dologin == 1:
 			msg="Login Successful"
-			flash(msg,success)
+			flash(msg,"success")
 			return redirect(url_for('dashboard_page'))
 		elif dologin ==2:
 			msg="Incorrect Username/Password"
-			flash(msg,danger)
+			flash(msg,"danger")
 		elif dologin == 3:
 			msg="Email does not exist please SignUp to continue."
-			flash(msg,warning)
+			flash(msg,"warning")
 	return render_template('login-page.html',title=title,page=page,login=dologin,user=user)
 @app.route("/signup" , methods=['GET' , 'POST'])
 def signup_page():
