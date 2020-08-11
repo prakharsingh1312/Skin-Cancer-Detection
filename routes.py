@@ -18,7 +18,7 @@ def home():
 @app.route("/",methods=['GET', 'POST'])
 def dashboard_page():
     title="Skin Cancer Detection"
-    page="Skin Cancer Detection"
+    page="Dashboard"
     if 'user_id' not in session:
         user="Not Logged In"
     else:
