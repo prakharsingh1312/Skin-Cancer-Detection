@@ -436,11 +436,21 @@ var data = {
         'Others'
     ]
 };
-var options = [];
+var options = {
+    legend:{
+        boxWidth:10,
+        fontColor: 'white',
+    },
+};
 var myPieChart = new Chart(ctx, {
     type: 'pie',
     data: data,
     options: options,
+    color: [
+        'white',
+        'grey',
+        'darkgray'
+    ],
     
 });
 </script>{% endblock %}
