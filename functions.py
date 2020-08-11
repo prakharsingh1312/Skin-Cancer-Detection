@@ -34,7 +34,7 @@ class UserTable(db.Model):
     dob=db.Column('dob', db.Date)
     password=db.Column('password',db.String(100))
     role=db.Column('role',db.Integer)
-    
+db.create_all()   
 #Functions
 
 #Tumor Prediction

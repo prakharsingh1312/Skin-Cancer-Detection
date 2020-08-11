@@ -47,6 +47,7 @@ The above copyright notice and this permission notice shall be included in all c
             <span class="navbar-toggler-icon icon-bar"></span>
           </button>
           <div class="collapse navbar-collapse justify-content-end">
+			  {% if 'user_id' in session %}
             <form class="navbar-form">
               <div class="input-group no-border">
                 <input type="text" value="" class="form-control" placeholder="Search...">
@@ -96,6 +97,7 @@ The above copyright notice and this permission notice shall be included in all c
                 </div>
               </li>
             </ul>
+			  {% endif %}
           </div>
         </div>
       </nav>
