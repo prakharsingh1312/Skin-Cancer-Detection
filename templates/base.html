@@ -215,7 +215,7 @@ The above copyright notice and this permission notice shall be included in all c
   </div>
 -->
   <!--   Core JS Files   -->
-	{% block scripts %}{% endblock %}
+	
   <script src="./static/assets/js/core/jquery.min.js"></script>
   <script src="./static/assets/js/core/popper.min.js"></script>
   <script src="./static/assets/js/core/bootstrap-material-design.min.js"></script>
@@ -436,6 +436,18 @@ The above copyright notice and this permission notice shall be included in all c
 
     });
   </script>
+	 
+	{% with messages = get_flashed_messages(with_categories=true) %}
+  			{% if messages %}
+		  {% for category, message in messages %}
+          
+            <script type="text/javascript">md.showNotification('top','center', '{{ message }}' , '{{ category }}');</script>
+          
+          {% endfor %}
+		 {% endif %}
+{% endwith %}
+          
+	{% block scripts %}{% endblock %}
 </body>
 
 </html>

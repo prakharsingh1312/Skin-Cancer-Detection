@@ -30,6 +30,7 @@ def login_page():
     page="Login"
     user="Not Logged In"
     err=0
+	msg=""
     dologin = -1
     if 'login' in session:
         dologin=session['login']
@@ -41,7 +42,15 @@ def login_page():
         password=request.form['password']
         dologin = login(email , password)
         if dologin == 1:
+			msg="Login Successful"
+			flash(msg,success)
             return redirect(url_for('dashboard_page'))
+		elif dologin ==2:
+			msg="Incorrect Username/Password"
+			flash(msg,danger)
+		elif dologin == 3:
+			msg="Email does not exist please SignUp to continue."
+			flash(msg,warning)
     return render_template('login-page.html',title=title,page=page,login=dologin,user=user)
 @app.route("/signup" , methods=['GET' , 'POST'])
 def signup_page():

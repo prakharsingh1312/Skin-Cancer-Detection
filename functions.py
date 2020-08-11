@@ -36,7 +36,27 @@ class UserTable(db.Model):
     role=db.Column('role',db.Integer)
 db.create_all()   
 #Functions
+#Login/Signup
+def crypt_password(password):
+	salt='SkinCancer'
+	password=str(password)+salt
+	password=hashlib.md5(password.encode())
+	return password.hexdigest()
 
+def login(email , password):
+	if(UserTable.query.filter_by(email=email).count()):
+		user=UserTable.query.filter_by(email=email).first()
+		password=crypt_password(password)
+		if not user.user_activated:
+			return 3
+		elif user.password == password:
+			session['user_id']=user.id
+			session['user_name']=user.name
+			session['user_role']=user.role
+			return 1
+		else:
+			return 0
+	return 2
 #Tumor Prediction
 def rmse(y_true,y_pred):
     return np.sqrt(mean_squared_error(y_true,y_pred))
