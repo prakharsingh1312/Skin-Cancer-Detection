@@ -433,7 +433,7 @@ The above copyright notice and this permission notice shall be included in all c
     $(document).ready(function() {
       // Javascript method's body can be found in assets/js/demos.js
       md.initDashboardPageCharts();
-
+		
     });
   </script>
 	 
@@ -441,7 +441,7 @@ The above copyright notice and this permission notice shall be included in all c
   			{% if messages %}
 		  {% for category, message in messages %}
           
-            <script type="text/javascript">md.showNotification('top','center', '{{ message }}' , '{{ category }}');</script>
+            <script>md.showNotification('top','center', '{{ message }}' , '{{ category }}');</script>
           
           {% endfor %}
 		 {% endif %}

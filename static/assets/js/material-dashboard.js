@@ -180,15 +180,7 @@ md = {
         align: align
       }
     });
-  }, {
-      type: type[color],
-      timer: 3000,
-      placement: {
-        from: from,
-        align: align
-      }
-    });
-  },
+   },
 
   initDocumentationCharts: function() {
     if ($('#dailySalesChart').length != 0 && $('#websiteViewsChart').length != 0) {
