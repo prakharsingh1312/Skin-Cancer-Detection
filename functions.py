@@ -25,15 +25,15 @@ class Test_Graphs(db.Model):
 	target=db.Column('target' , db.Integer)
 	
 class UserTable(db.Model):
-    __tablename__='user_table'
-    id=db.Column('id', db.Integer, primary_key=True)
-    name=db.Column('name' , db.String(100))
-    email=db.Column('email' , db.String(100))
+	__tablename__='user_table'
+	id=db.Column('id', db.Integer, primary_key=True)
+	name=db.Column('name' , db.String(100))
+	email=db.Column('email' , db.String(100))
     #location=db.Column('location' , db.String(100))
-    gender=db.Column('gender' , db.String(1))
-    dob=db.Column('dob', db.Date)
-    password=db.Column('password',db.String(100))
-    role=db.Column('role',db.Integer)
+	gender=db.Column('gender' , db.String(1))
+	dob=db.Column('dob', db.Date)
+	password=db.Column('password',db.String(100))
+	role=db.Column('role',db.Integer)
 	user_activated=db.Column('user_activated',db.Integer)
 db.drop_all()
 db.create_all()   
