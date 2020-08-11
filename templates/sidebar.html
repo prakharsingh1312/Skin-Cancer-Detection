@@ -9,20 +9,20 @@
         </a></div>
       <div class="sidebar-wrapper">
         <ul class="nav">
-          <li class="nav-item active  ">
-            <a class="nav-link" href="index.html">
+          <li class="nav-item {% if page=='Dashboard' %}active{% endif %}  ">
+            <a class="nav-link" href="./">
               <i class="material-icons">dashboard</i>
               <p>Dashboard</p>
             </a>
           </li>
             {% if 'user_id' not in session %}
-            <li class="nav-item ">
+            <li class="nav-item {% if page=='Login' %}active{% endif %}">
             <a class="nav-link" href="./login">
               <i class="material-icons">person</i>
               <p>Login</p>
             </a>
           </li>
-          <li class="nav-item ">
+          <li class="nav-item {% if page=='SignUp' %}active{% endif %}">
             <a class="nav-link" href="./signup">
               <i class="material-icons">content_paste</i>
               <p>SignUp</p>

@@ -6,6 +6,7 @@ from sklearn.ensemble import ExtraTreesRegressor
 from sklearn.model_selection import StratifiedKFold, KFold
 from sklearn.metrics import mean_squared_error
 import pickle
+import hashlib
 from fastai import *
 from fastai.vision import *
 from werkzeug.utils import secure_filename
@@ -25,17 +26,59 @@ class Test_Graphs(db.Model):
 	target=db.Column('target' , db.Integer)
 	
 class UserTable(db.Model):
-    __tablename__='user_table'
-    id=db.Column('id', db.Integer, primary_key=True)
-    name=db.Column('name' , db.String(100))
-    email=db.Column('email' , db.String(100))
+	__tablename__='user_table'
+	id=db.Column('id', db.Integer, primary_key=True)
+	name=db.Column('name' , db.String(100))
+	email=db.Column('email' , db.String(100))
     #location=db.Column('location' , db.String(100))
-    gender=db.Column('gender' , db.String(1))
-    dob=db.Column('dob', db.Date)
-    password=db.Column('password',db.String(100))
-    role=db.Column('role',db.Integer)
-    
+	gender=db.Column('gender' , db.String(1))
+	dob=db.Column('dob', db.Date)
+	password=db.Column('password',db.String(100))
+	role=db.Column('role',db.Integer)
+	user_activated=db.Column('user_activated',db.Integer)
+db.drop_all()
+db.create_all()   
 #Functions
+#Login/Signup
+def crypt_password(password):
+	salt='SkinCancer'
+	password=str(password)+salt
+	password=hashlib.md5(password.encode())
+	return password.hexdigest()
+
+def login(email , password):
+	if(UserTable.query.filter_by(email=email).count()):
+		user=UserTable.query.filter_by(email=email).first()
+		password=crypt_password(password)
+		if not user.user_activated:
+			return 3
+		elif user.password == password:
+			session['user_id']=user.id
+			session['user_name']=user.name
+			session['user_role']=user.role
+			return 1
+		else:
+			return 0
+	return 2
+
+
+def signup(name,password,email,dob,gender):
+
+	if(UserTable.query.filter_by(email=email).count()):
+		return 0
+	#user_hash = random.randint(0,1000)
+	#user_hash=crypt_password(user_hash)
+	#token=crypt_password(email)
+	#reciever=[]
+	#reciever.append(email)
+	user=UserTable(name = name , password = password , email = email , gender=gender , dob=dob , role=3 , user_activated=1 )
+	#subject='Login | Verification'
+	#message="You can login after you have verified your email address. Please click this link to verify you email address: http://3.6.235.34:5000/verify?token="+str(token)+"&hash="+str(user_hash)+"&verify"
+	#if send_mail(message , reciever , subject):
+	db.session.add(user)
+	db.session.commit()
+	return 1
+	#return 0
 
 #Tumor Prediction
 def rmse(y_true,y_pred):
@@ -107,4 +150,3 @@ def upload_file(file):
 #print(tumor_size(tester))
 #Charts Data
 #def 
-

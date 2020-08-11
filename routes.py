@@ -18,7 +18,7 @@ def home():
 @app.route("/",methods=['GET', 'POST'])
 def dashboard_page():
     title="Skin Cancer Detection"
-    page="Skin Cancer Detection"
+    page="Dashboard"
     if 'user_id' not in session:
         user="Not Logged In"
     else:
@@ -26,23 +26,36 @@ def dashboard_page():
     return(render_template("index.html",title=title,page=page,user=user))
 @app.route("/login" , methods=['GET' , 'POST'])
 def login_page():
-    title="Login | Skin Cancer Detection"
-    page="Login"
-    user="Not Logged In"
-    err=0
-    dologin = -1
-    if 'login' in session:
-        dologin=session['login']
-        session.pop('login',None)
-    elif 'user_id' in session:
-        return redirect(url_for('dashboard_page'))
-    elif request.method == 'POST':
-        email=request.form['email']
-        password=request.form['password']
-        dologin = login(email , password)
-        if dologin == 1:
-            return redirect(url_for('dashboard_page'))
-    return render_template('login-page.html',title=title,page=page,login=dologin,user=user)
+	title="Login | Skin Cancer Detection"
+	page="Login"
+	user="Not Logged In"
+	err=0
+	dologin = -1
+	if 'login' in session:
+		dologin=session['login']
+		session.pop('login',None)
+	elif 'user_id' in session:
+		return redirect(url_for('dashboard_page'))
+	elif request.method == 'POST':
+		email=request.form['email']
+		password=request.form['password']
+		dologin = login(email , password)
+		if dologin == 1:
+			msg="Login Successful"
+			flash(msg,"success")
+			return redirect(url_for('dashboard_page'))
+		elif dologin ==0:
+			msg="Incorrect Username/Password"
+			flash(msg,"danger")
+		elif dologin == 2:
+			msg="Email does not exist please SignUp to continue."
+			flash(msg,"warning")
+		elif dologin == 3:
+			msg="User not verified."
+	if dologin == 4:
+		msg="Account created.Please LogIn to continue."
+		flash(msg,"success")
+	return render_template('login-page.html',title=title,page=page,login=dologin,user=user)
 @app.route("/signup" , methods=['GET' , 'POST'])
 def signup_page():
     title="SignUp | Skin Cancer Detection"
@@ -54,8 +67,10 @@ def signup_page():
         name = request.form['name']
         password = request.form['password']
         email = request.form['email']
+        dob = request.form['dob']
+        gender = request.form['gender']
         password = crypt_password(password)
-        if signup(name,password,email):
-            session['login']=3
+        if signup(name,password,email,dob,gender):
+            session['login']=4
             return redirect(url_for('login_page'))
     return render_template('signup-page.html',title=title,page=page,user=user)

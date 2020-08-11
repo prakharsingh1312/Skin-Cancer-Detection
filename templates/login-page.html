@@ -2,10 +2,10 @@
 {% block content %} 
       <div class="row">
         <div class="col-lg-4 col-md-6 col-sm-8 ml-auto mr-auto">
-          <form class="form" method="" action="">
+          <form class="form" method="POST" action="">
             <div class="card card-login card-hidden">
               <div class="card-header card-header-primary text-center">
-                <h4 class="card-title">Login</h4>
+                <h4 class="card-title">LogIn</h4>
                 <div class="social-line">
                   <a href="#pablo" class="btn btn-just-icon btn-link btn-white">
                     <i class="fa fa-facebook-square"></i>
@@ -30,8 +30,10 @@
                         <i class="material-icons">face</i>
                       </span>
                     </div>
-                     
-                    <input type="email" class="form-control" placeholder="Email..." >
+
+                      
+                    <input type="email" name="email" class="form-control" placeholder="Email..." required>
+
                   </div>
                 </span>
                 <span class="bmd-form-group">
@@ -42,12 +44,14 @@
                       </span>
                     </div>
                       
-                    <input type="password" class="form-control" placeholder="Password...">
+
+                    <input type="password" name="password" class="form-control" placeholder="Password..." required>
+
                   </div>
                 </span>
               </div>
               <div class="card-footer justify-content-center">
-                <a href="#pablo" class="btn btn-primary btn-round">Lets Go</a>
+				  <button type="submit" class="btn btn-primary btn-round">LogIn</button>
               </div>
             </div>
           </form>
