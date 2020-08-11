@@ -52,6 +52,8 @@ def login_page():
 			flash(msg,"warning")
 		elif dologin == 3:
 			msg="User not verified."
+		elif dologin == 4:
+			msg="Account created.Please LogIn to continue."
 			flash(msg,"warning")
 	return render_template('login-page.html',title=title,page=page,login=dologin,user=user)
 @app.route("/signup" , methods=['GET' , 'POST'])
@@ -65,8 +67,10 @@ def signup_page():
         name = request.form['name']
         password = request.form['password']
         email = request.form['email']
+        dob = request.form['dob']
+        gender = request.form['gender']
         password = crypt_password(password)
-        if signup(name,password,email):
-            session['login']=3
+        if signup(name,password,email,dob,gender):
+            session['login']=4
             return redirect(url_for('login_page'))
     return render_template('signup-page.html',title=title,page=page,user=user)

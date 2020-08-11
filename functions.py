@@ -60,6 +60,26 @@ def login(email , password):
 		else:
 			return 0
 	return 2
+
+
+def signup(name,password,email,dob,gender):
+
+	if(UserTable.query.filter_by(email=email).count()):
+		return 0
+	#user_hash = random.randint(0,1000)
+	#user_hash=crypt_password(user_hash)
+	#token=crypt_password(email)
+	#reciever=[]
+	#reciever.append(email)
+	user=UserTable(name = name , password = password , email = email , gender=gender , dob=dob , role=3 , user_activated=1 )
+	#subject='Login | Verification'
+	#message="You can login after you have verified your email address. Please click this link to verify you email address: http://3.6.235.34:5000/verify?token="+str(token)+"&hash="+str(user_hash)+"&verify"
+	#if send_mail(message , reciever , subject):
+	db.session.add(user)
+	db.session.commit()
+	return 1
+	#return 0
+
 #Tumor Prediction
 def rmse(y_true,y_pred):
     return np.sqrt(mean_squared_error(y_true,y_pred))
@@ -130,4 +150,3 @@ def upload_file(file):
 #print(tumor_size(tester))
 #Charts Data
 #def 
-
