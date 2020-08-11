@@ -52,9 +52,9 @@ def login_page():
 			flash(msg,"warning")
 		elif dologin == 3:
 			msg="User not verified."
-		elif dologin == 4:
-			msg="Account created.Please LogIn to continue."
-			flash(msg,"warning")
+	if dologin == 4:
+		msg="Account created.Please LogIn to continue."
+		flash(msg,"success")
 	return render_template('login-page.html',title=title,page=page,login=dologin,user=user)
 @app.route("/signup" , methods=['GET' , 'POST'])
 def signup_page():
