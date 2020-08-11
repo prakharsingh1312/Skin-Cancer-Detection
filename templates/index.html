@@ -6,67 +6,75 @@
               <div class="card card-stats">
                 <div class="card-header card-header-warning card-header-icon">
                   <div class="card-icon">
-                    <i class="material-icons">content_copy</i>
+                    <i class="material-icons">admin_panel_settings</i>
                   </div>
-                  <p class="card-category">Used Space</p>
-                  <h3 class="card-title">49/50
-                    <small>GB</small>
+                  <p class="card-category">Registered Doctors</p>
+                  <h3 class="card-title">132
+<!--                    <small>GB</small>-->
                   </h3>
                 </div>
+<!--
                 <div class="card-footer">
                   <div class="stats">
                     <i class="material-icons text-danger">warning</i>
                     <a href="javascript:;">Get More Space...</a>
                   </div>
                 </div>
+-->
               </div>
             </div>
             <div class="col-lg-3 col-md-6 col-sm-6">
               <div class="card card-stats">
                 <div class="card-header card-header-success card-header-icon">
                   <div class="card-icon">
-                    <i class="material-icons">store</i>
+                    <i class="material-icons">local_hospital</i>
                   </div>
-                  <p class="card-category">Revenue</p>
-                  <h3 class="card-title">$34,245</h3>
+                  <p class="card-category">Hospital TieUps</p>
+                  <h3 class="card-title">3</h3>
                 </div>
+<!--
                 <div class="card-footer">
                   <div class="stats">
                     <i class="material-icons">date_range</i> Last 24 Hours
                   </div>
                 </div>
+-->
               </div>
             </div>
             <div class="col-lg-3 col-md-6 col-sm-6">
               <div class="card card-stats">
                 <div class="card-header card-header-danger card-header-icon">
                   <div class="card-icon">
-                    <i class="material-icons">info_outline</i>
+                    <i class="material-icons">supervised_user_circle</i>
                   </div>
-                  <p class="card-category">Fixed Issues</p>
-                  <h3 class="card-title">75</h3>
+                  <p class="card-category">Satisfied Patients</p>
+                  <h3 class="card-title">1543</h3>
                 </div>
+<!--
                 <div class="card-footer">
                   <div class="stats">
                     <i class="material-icons">local_offer</i> Tracked from Github
                   </div>
                 </div>
+-->
               </div>
             </div>
             <div class="col-lg-3 col-md-6 col-sm-6">
               <div class="card card-stats">
                 <div class="card-header card-header-info card-header-icon">
                   <div class="card-icon">
-                    <i class="fa fa-twitter"></i>
+                    <i class="material-icons">online_prediction</i>
                   </div>
-                  <p class="card-category">Followers</p>
-                  <h3 class="card-title">+245</h3>
+                  <p class="card-category">Prediction Accuracy</p>
+                  <h3 class="card-title">92%</h3>
                 </div>
+<!--
                 <div class="card-footer">
                   <div class="stats">
                     <i class="material-icons">update</i> Just Updated
                   </div>
                 </div>
+-->
               </div>
             </div>
           </div>
@@ -74,7 +82,7 @@
             <div class="col-md-4">
               <div class="card card-chart">
                 <div class="card-header card-header-success">
-                  <div class="ct-chart" id="dailySalesChart"></div>
+                  <canvas id="sexRatio"></canvas>
                 </div>
                 <div class="card-body">
                   <h4 class="card-title">Daily Sales</h4>
@@ -413,4 +421,26 @@
             </div>
           </div>
         </div> {% endblock %}
-      {% block scripts %}{% endblock %}
+      {% block scripts %}
+<script>
+var ctx = document.getElementById('sexRatio');
+var data = {
+    datasets: [{
+        data: [62, 37, 1]
+    }],
+
+    // These labels appear in the legend and in the tooltips when hovering different arcs
+    labels: [
+        'Male',
+        'Female',
+        'Others'
+    ]
+};
+var options = [];
+var myPieChart = new Chart(ctx, {
+    type: 'pie',
+    data: data,
+    options: options,
+    backgroundColor: [rgba(0, 0, 0, 0.0)]
+});
+</script>{% endblock %}
