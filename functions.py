@@ -6,6 +6,7 @@ from sklearn.ensemble import ExtraTreesRegressor
 from sklearn.model_selection import StratifiedKFold, KFold
 from sklearn.metrics import mean_squared_error
 import pickle
+import hashlib
 from fastai import *
 from fastai.vision import *
 from werkzeug.utils import secure_filename
