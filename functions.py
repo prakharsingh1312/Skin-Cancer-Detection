@@ -34,6 +34,8 @@ class UserTable(db.Model):
     dob=db.Column('dob', db.Date)
     password=db.Column('password',db.String(100))
     role=db.Column('role',db.Integer)
+	user_activated=db.Column('user_activated',db.Integer)
+db.drop_all()
 db.create_all()   
 #Functions
 #Login/Signup

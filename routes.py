@@ -37,7 +37,6 @@ def login_page():
 	elif 'user_id' in session:
 		return redirect(url_for('dashboard_page'))
 	elif request.method == 'POST':
-		return render_template('login-page.html',title=title,page=page,login=dologin,user=user)
 		email=request.form['email']
 		password=request.form['password']
 		dologin = login(email , password)
