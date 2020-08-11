@@ -50,7 +50,7 @@ def login_page():
 		elif dologin == 3:
 			msg="Email does not exist please SignUp to continue."
 			flash(msg,warning)
-		return render_template('login-page.html',title=title,page=page,login=dologin,user=user)
+	return render_template('login-page.html',title=title,page=page,login=dologin,user=user)
 @app.route("/signup" , methods=['GET' , 'POST'])
 def signup_page():
     title="SignUp | Skin Cancer Detection"
