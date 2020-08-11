@@ -26,32 +26,31 @@ def dashboard_page():
     return(render_template("index.html",title=title,page=page,user=user))
 @app.route("/login" , methods=['GET' , 'POST'])
 def login_page():
-    title="Login | Skin Cancer Detection"
-    page="Login"
-    user="Not Logged In"
-    err=0
-	msg=""
-    dologin = -1
-    if 'login' in session:
-        dologin=session['login']
-        session.pop('login',None)
-    elif 'user_id' in session:
-        return redirect(url_for('dashboard_page'))
-    elif request.method == 'POST':
-        email=request.form['email']
-        password=request.form['password']
-        dologin = login(email , password)
-        if dologin == 1:
+	title="Login | Skin Cancer Detection"
+	page="Login"
+	user="Not Logged In"
+	err=0
+	dologin = -1
+	if 'login' in session:
+		dologin=session['login']
+		session.pop('login',None)
+	elif 'user_id' in session:
+		return redirect(url_for('dashboard_page'))
+	elif request.method == 'POST':
+		email=request.form['email']
+		password=request.form['password']
+		dologin = login(email , password)
+		if dologin == 1:
 			msg="Login Successful"
 			flash(msg,success)
-            return redirect(url_for('dashboard_page'))
+			return redirect(url_for('dashboard_page'))
 		elif dologin ==2:
 			msg="Incorrect Username/Password"
 			flash(msg,danger)
 		elif dologin == 3:
 			msg="Email does not exist please SignUp to continue."
 			flash(msg,warning)
-    return render_template('login-page.html',title=title,page=page,login=dologin,user=user)
+		return render_template('login-page.html',title=title,page=page,login=dologin,user=user)
 @app.route("/signup" , methods=['GET' , 'POST'])
 def signup_page():
     title="SignUp | Skin Cancer Detection"
