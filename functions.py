@@ -24,7 +24,7 @@ class Test_Graphs(db.Model):
 	diagnosis=db.Column('diagnosis' , db.String(34))
 	benign_malignant=db.Column('benign_malignant' , db.String(9))
 	target=db.Column('target' , db.Integer)
-	
+
 class UserTable(db.Model):
 	__tablename__='user_table'
 	id=db.Column('id', db.Integer, primary_key=True)
@@ -36,8 +36,8 @@ class UserTable(db.Model):
 	password=db.Column('password',db.String(100))
 	role=db.Column('role',db.Integer)
 	user_activated=db.Column('user_activated',db.Integer)
-db.drop_all()
-db.create_all()   
+#db.drop_all()
+#db.create_all()
 #Functions
 #Login/Signup
 def crypt_password(password):
@@ -79,6 +79,10 @@ def signup(name,password,email,dob,gender):
 	db.session.commit()
 	return 1
 	#return 0
+def logout():
+	session.pop('user_id',None)
+	session.pop('user_name',None)
+	return 1
 
 #Tumor Prediction
 def rmse(y_true,y_pred):
@@ -90,7 +94,7 @@ def tumor_size(tester):
 	sample = pd.read_csv(os.path.join(os.path.dirname(__file__), 'sample_submission.csv'))
 	X = train.drop(['tumor_size','std_dev_malign', 'err_malign', 'malign_penalty'],axis=1)
 	y = train['tumor_size'].copy()
-	
+
 	tester.append(tester[3]/tester[5])
 	tester.append(tester[0]/tester[4])
 	tester.append(tester[5]/tester[3])
@@ -117,13 +121,13 @@ def tumor_size(tester):
 
 
 	model = ExtraTreesRegressor(n_jobs=-1,n_estimators=200)
-			
+
 	model.fit(X, y)
 
 
 	tester=np.array(tester)
 	tester=tester.reshape(-1,len(tester))
-	
+
 	'''with open('regressor.pickle','rb') as f:
 					model=pickle.load(f)
 			'''
@@ -132,21 +136,22 @@ def tumor_size(tester):
 
 #Cancer Prediction
 def predict_cancer(image):
-	print(os.path.join(os.path.dirname(__file__),'uploads/'+image))
-	model = load_learner('large_files/')
-	dataset=['Negative','Positive']
-	img=open_image(os.path.join(os.path.dirname(__file__),'uploads/'+image))
+	print(os.path.join(os.path.dirname(__file__),'static/uploads/'+image))
+	model = load_learner('large_files/','pseudo_binary.pkl')
+	dataset=['NEGATIVE','POSITIVE']
+	img=open_image(os.path.join(os.path.dirname(__file__),'static/uploads/'+image))
 	tens=model.predict(img)[-1].numpy()
 	tens1=model.predict(img)[-1].numpy()
-	return('Predicted'+str(dataset[np.argmax(tens1)])+'with probability '+str(np.max(tens1)))
+	return('Predicted <b>'+str(dataset[np.argmax(tens1)])+'</b> with probability <b>'+str(np.max(tens1))+'</b>')
 
 
 
 def upload_file(file):
-	file.save('uploads/'+secure_filename(file.filename))
+	file.save('static/uploads/'+secure_filename(file.filename))
 	return file.filename
+
 
 
 #print(tumor_size(tester))
 #Charts Data
-#def 
+#def

@@ -17,13 +17,25 @@ def home():
 	return render_template("test.html")
 @app.route("/",methods=['GET', 'POST'])
 def dashboard_page():
-    title="Skin Cancer Detection"
-    page="Dashboard"
-    if 'user_id' not in session:
-        user="Not Logged In"
-    else:
-        user=session['user_name']
-    return(render_template("index.html",title=title,page=page,user=user))
+	if request.method == 'POST':
+		if request.form['submit']=="tumor_size":
+			send=[];
+			send.append(float(request.form['mass']))
+			send.append(float(request.form['size']))
+			send.append(float(request.form['mratio']))
+			send.append(float(request.form['damage']))
+			send.append(float(request.form['exparea']))
+			send.append(float(request.form['dratio']))
+			return str(tumor_size(send))
+		if request.form['submit']=="predict_cancer":
+			return predict_cancer(upload_file(request.files['file1']))
+	title="Skin Cancer Detection"
+	page="Dashboard"
+	if 'user_id' not in session:
+		user="Not Logged In"
+	else:
+		user=session['user_name']
+	return(render_template("index.html",title=title,page=page,user=user))
 @app.route("/login" , methods=['GET' , 'POST'])
 def login_page():
 	title="Login | Skin Cancer Detection"
@@ -74,3 +86,8 @@ def signup_page():
             session['login']=4
             return redirect(url_for('login_page'))
     return render_template('signup-page.html',title=title,page=page,user=user)
+@app.route("/logout")
+def logout_page():
+	if(logout()):
+		return redirect(url_for('login_page'))
+	return redirect(url_for('dashboard_page'))

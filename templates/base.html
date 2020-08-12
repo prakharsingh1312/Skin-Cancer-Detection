@@ -96,7 +96,7 @@ The above copyright notice and this permission notice shall be included in all c
                   <a class="dropdown-item" href="#">Profile</a>
                   <a class="dropdown-item" href="#">Settings</a>
                   <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="#">Log out</a>
+                  <a class="dropdown-item" href="/logout">Log out</a>
                 </div>
               </li>
             </ul>
@@ -197,7 +197,7 @@ The above copyright notice and this permission notice shall be included in all c
                 <a href="https://www.creative-tim.com/product/material-dashboard-pro" target="_blank" class="btn btn-warning btn-block">
                   Get the pro version
                 </a>
-            </li> 
+            </li>
         <li class="button-container">
           <a href="https://demos.creative-tim.com/material-dashboard/docs/2.1/getting-started/introduction.html" target="_blank" class="btn btn-default btn-block">
             View Documentation
@@ -218,7 +218,7 @@ The above copyright notice and this permission notice shall be included in all c
   </div>
 -->
   <!--   Core JS Files   -->
-	
+
   <script src="./static/assets/js/core/jquery.min.js"></script>
   <script src="./static/assets/js/core/popper.min.js"></script>
   <script src="./static/assets/js/core/bootstrap-material-design.min.js"></script>
@@ -441,20 +441,20 @@ The above copyright notice and this permission notice shall be included in all c
     $(document).ready(function() {
       // Javascript method's body can be found in assets/js/demos.js
       md.initDashboardPageCharts();
-		
+
     });
   </script>
-	 
+
 	{% with messages = get_flashed_messages(with_categories=true) %}
   			{% if messages %}
 		  {% for category, message in messages %}
-          
+
             <script>md.showNotification('top','center', '{{ message }}' , '{{ category }}');</script>
-          
+
           {% endfor %}
 		 {% endif %}
 {% endwith %}
-          
+
 	{% block scripts %}{% endblock %}
 </body>
 
