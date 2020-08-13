@@ -129,89 +129,7 @@
               </div>
             </div>
           </div>
-          <div class="row">
-            <div class="col-lg-6 col-md-12">
-              <div class="card">
-                <div class="card-header card-header-tabs card-header-primary">
-                  <div class="nav-tabs-navigation">
-                    <div class="nav-tabs-wrapper">
-                      <h4 class="card-title ">Skin Tumor Probability</h4>
-                      <!-- <ul class="nav nav-tabs" data-tabs="tabs">
-                        <li class="nav-item">
-                          <a class="nav-link active" href="#profile" data-toggle="tab">
-                            <i class="material-icons">bug_report</i> Bugs
-                            <div class="ripple-container"></div>
-                          </a>
-                        </li>
-                        <li class="nav-item">
-                          <a class="nav-link" href="#messages" data-toggle="tab">
-                            <i class="material-icons">code</i> Website
-                            <div class="ripple-container"></div>
-                          </a>
-                        </li>
-                        <li class="nav-item">
-                          <a class="nav-link" href="#settings" data-toggle="tab">
-                            <i class="material-icons">cloud</i> Server
-                            <div class="ripple-container"></div>
-                          </a>
-                        </li>
-                      </ul> -->
-                    </div>
-                  </div>
-                </div>
-                <div class="card-body">{% if 'user_id' in session %}
-                  <div class="tab-content" id="result">
-                    <form method="POST" action="" class="form1" onsubmit="return false">
 
-
-                        <div class="form-group">
-                          <label for="exampleFormControlSelect1">Location:</label>
-                          <select class="form-control selectpicker" data-style="btn btn-link" id="locstion" name='gender' style="all:none;" required>
-                            <option value="NF">Neck/Face</option>
-                            <option value="UA">Upper Abdomen</option>
-                            <option value="LA">Lower Abdomen</option>
-                            <option value="A">Arms</option>
-
-                          </select>
-                        </div>
-    <div class="form-group">
-
-      <label for="exampleFormControlFile1" id="file1">Upload Image</label>
-      <input type="file" class="form-control-file" id="exampleFormControlFile1" name="file1" id="file-input">
-      <span class="input-group-btn">
-            <button type="button" style="margin-left:10px;" class="btn btn-fab btn-round btn-primary" id="fileButton">
-                <i class="material-icons">attach_file</i>
-            </button><br>
-
-    </div>
-    <div class="form-group text-center">
-    <button type="submit" name="submit" value="predict_cancer" id="submitForm1" class="btn btn-primary btn-round predict_cancer">Predict</button></div>
-
-  </form>
-
-                  </div>
-                  {% else %}
-                  <div class="tab-content" id="result">
-                    Please <a href="/login" class="link"><b> LOGIN </b></a> or <a href="/singup" class="link"><b> SIGN-UP </b></a> to use this feature.
-                      </div>
-                      {% endif %}
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-6 col-md-12">
-              <div class="card">
-                <div class="card-header card-header-warning">
-                  <h4 class="card-title">Skin Tumor Size</h4>
-                  <!-- <p class="card-category">New employees on 15th September, 2016</p> -->
-                </div>
-                <div class="card-body ">
-                <div class="tab-content" id="result2">
-
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
         </div> {% endblock %}
       {% block scripts %}
 <script>
@@ -225,9 +143,9 @@ var data = {
         'rgba(196,44,33,1)'
     ],
     backgroundColor : [
-        'rgba(255, 255, 255,.5)',
-        'rgba(240, 150, 61,0.5)',
-        'rgba(196,44,33,0.5)'
+        'rgba(255, 255, 255,.8)',
+        'rgba(240, 150, 61,0.8)',
+        'rgba(196,44,33,0.8)'
     ],
     hoverBackgroundColor:[
         'rgba(255, 255, 255,1)',
@@ -259,51 +177,4 @@ var myPieChart = new Chart(ctx, {
 
 });
 </script>
-<script>
-  $(document).on('change','.form-control-file',function(e){
-    $('#file1').html(e.target.files[0].name);
-  });
-  $(document).on('click','#fileButton',function(){
-    $('#file1').click();
-  });
-  $(document).on('click','#submitForm1',function(){
-    form_submit();
-  })
-
-  function form_submit(){
-
-    var form=$('.form1')[0];
-	var formdata=new FormData(form);
-  formdata.append('submit','predict_cancer');
-  $('#result').html('Processing...');
-  // for (var pair of formdata.entries()) {
-  //     console.log(pair[0]+ ', ' + pair[1]);
-  // }
-		$("#submitForm1").prop("disabled", true);
-
-        $.ajax({
-            type: "POST",
-            enctype: 'multipart/form-data',
-            url: "./",
-            data: formdata,
-            processData: false,
-            contentType: false,
-            cache: false,
-            timeout: 600000,
-            success: function (data) {
-				$('#result').html(data);
-				$("#submitForm1").prop("disabled", false);
-        console.log(data);
-
-            },
-            error: function (e) {
-
-                form_error('Error submitting form please try again.','#submitForm')
-                console.log("ERROR : ", e);
-                $("#submitForm1").prop("disabled", false);
-
-            }
-		});
-
-  }
-  </script>{% endblock %}
+{% endblock %}

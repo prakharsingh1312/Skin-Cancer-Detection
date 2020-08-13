@@ -17,23 +17,6 @@ def home():
 	return render_template("test.html")
 @app.route("/",methods=['GET', 'POST'])
 def dashboard_page():
-	if request.method == 'POST':
-		if request.form['submit']=="tumor_size":
-			send=[];
-			send.append(float(request.form['mass']))
-			send.append(float(request.form['size']))
-			send.append(float(request.form['mratio']))
-			send.append(float(request.form['damage']))
-			send.append(float(request.form['exparea']))
-			send.append(float(request.form['dratio']))
-			return str(tumor_size(send))
-		if request.form['submit']=="predict_cancer":
-			res=predict_cancer(upload_file(request.files['file1']))
-			if res['prediction']=="POSITIVE":
-				res2=predict_malig_type(res['path'])
-				return "Prelimnary tests reveal that the type of skin cancer identified is <b class='text-uppercase'>"+res2['type']+"</b> and the chances of it being malignant are <b>"+res2['probability']+"%</b>."
-			else:
-				return "Prelimnary tests reveal that the image you uploaded is <b>NOT IDENTIFIED</b> as a skin tumor. <br><b>Confidence of prediction: "+res['probability']+"</b><br> If you still want to proceed with the test click the button below.<br><div class='text-center'><button name='path' class='btn btn-primary btn-round' value='"+res['path']+"' id='force_check'>Proceed</button></div>"
 	title="Skin Cancer Detection"
 	page="Dashboard"
 	if 'user_id' not in session:
@@ -41,6 +24,8 @@ def dashboard_page():
 	else:
 		user=session['user_name']
 	return(render_template("index.html",title=title,page=page,user=user))
+
+
 @app.route("/login" , methods=['GET' , 'POST'])
 def login_page():
 	title="Login | Skin Cancer Detection"
@@ -73,6 +58,8 @@ def login_page():
 		msg="Account created.Please LogIn to continue."
 		flash(msg,"success")
 	return render_template('login-page.html',title=title,page=page,login=dologin,user=user)
+
+
 @app.route("/signup" , methods=['GET' , 'POST'])
 def signup_page():
     title="SignUp | Skin Cancer Detection"
@@ -91,8 +78,41 @@ def signup_page():
             session['login']=4
             return redirect(url_for('login_page'))
     return render_template('signup-page.html',title=title,page=page,user=user)
+
+
 @app.route("/logout")
 def logout_page():
 	if(logout()):
 		return redirect(url_for('login_page'))
 	return redirect(url_for('dashboard_page'))
+
+
+@app.route("/pathology",methods=['GET','POST'])
+def pathology_page():
+	title="Pathology | Skin Cancer Detection"
+	page="Pathology"
+	if 'user_id' not in session:
+		redirect(url_for('login_page'))
+	else:
+		user=session['user_name']
+	if request.method == 'POST':
+		if request.form['submit']=="tumor_size":
+			send=[];
+			send.append(float(request.form['mass']))
+			send.append(float(request.form['size']))
+			send.append(float(request.form['mratio']))
+			send.append(float(request.form['damage']))
+			send.append(float(request.form['exparea']))
+			send.append(float(request.form['dratio']))
+			return str(tumor_size(send))
+		if request.form['submit']=="predict_cancer":
+			res=predict_cancer(upload_file(request.files['file1']))
+			if res['prediction']=="POSITIVE":
+				res2=predict_malig_type(res['path'])
+				return "Prelimnary tests reveal that the type of skin cancer identified is <b class='text-uppercase'>"+res2['type']+"</b> and the chances of it being malignant are <b>"+res2['probability']+"%</b>."
+			else:
+				return "Prelimnary tests reveal that the image you uploaded is <b>NOT IDENTIFIED</b> as a skin tumor. <br><b>Confidence of prediction: "+res['probability']+"</b><br> If you still want to proceed with the test click the button below.<br><div class='text-center'><button name='path' class='btn btn-primary btn-round' value='"+res['path']+"' id='force_check'>Proceed</button></div>"
+		if request.form['submit']=="force_check":
+			res2=predict_malig_type(request.form['path'])
+			return "Prelimnary tests reveal that the type of skin cancer identified is <b class='text-uppercase'>"+res2['type']+"</b> and the chances of it being malignant are <b>"+res2['probability']+"%</b>."
+	return render_template('pathology.html',page=page,title=title,user=user)
