@@ -145,6 +145,7 @@ def predict_malig_type(image):
 	except:
 		g=c3
 	res['type']=g
+	res['path']=image
 	return res
 
 
