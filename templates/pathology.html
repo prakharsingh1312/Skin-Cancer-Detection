@@ -76,7 +76,7 @@
       </div>
       <div class="card-body ">
       <div class="tab-content" id="result2">
-        <form id="form2" moethod="POST" action="">
+        <form class="form2" moethod="POST" action="">
                             <div class="row">
                               <div class="col-md-6">
                                 <div class="form-group">
@@ -149,7 +149,7 @@
                           </label>
                         </div>
                         <div class="text-center">
-                            <button type="submit" class="btn btn-success btn-round">Predict</button></div>
+                            <button name="submit" id="submitForm2" class="btn btn-success btn-round">Predict</button></div>
                     <div class="clearfix"></div>
                   </form>
         </div>
@@ -168,6 +168,9 @@
   });
   $(document).on('click','#submitForm1',function(){
     form_submit();
+  })
+  $(document).on('click','#submitForm2',function(){
+    form2_submit();
   })
   $(document).on('click','#force_check',function(){
     force_check($('#force_check').val());
@@ -208,7 +211,43 @@
             }
 		});
 
-  }
+}
+    function form2_submit(){
+
+      var form=$('.form2')[0];
+  	var formdata=new FormData(form);
+    formdata.append('submit','tumor_size');
+    $('#result2').html('Processing...');
+    for (var pair of formdata.entries()) {
+        console.log(pair[0]+ ', ' + pair[1]);
+     }
+  $("#submitForm2").prop("disabled", true);
+
+      $.ajax({
+          type: "POST",
+          enctype: 'multipart/form-data',
+          url: "./pathology",
+          data: formdata,
+          processData: false,
+          contentType: false,
+          cache: false,
+          timeout: 600000,
+          success: function (data) {
+      $('#result2').html(data);
+      $("#submitForm2").prop("disabled", false);
+      console.log(data);
+
+          },
+          error: function (e) {
+
+              form_error('Error submitting form please try again.','#submitForm')
+              console.log("ERROR : ", e);
+              $("#submitForm2").prop("disabled", false);
+
+          }
+  });
+
+}
   function force_check(path){
     var formdata= new FormData();
     formdata.append('submit','force_check');
@@ -238,5 +277,6 @@
         }
 });
   }
+
   </script>
 {% endblock %}

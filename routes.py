@@ -101,10 +101,19 @@ def pathology_page():
 			send.append(float(request.form['mass']))
 			send.append(float(request.form['size']))
 			send.append(float(request.form['mratio']))
-			send.append(float(request.form['damage']))
+			send.append(float(request.form['dsize']))
 			send.append(float(request.form['exparea']))
+			if 'checkbox' in request.form:
+				send.append(126.1385)
+				send.append(3846.32)
+				send.append(54)
+			else:
+				send.append(float(request.form['std_dev']))
+				send.append(float(request.form['merror']))
+				send.append(float(request.form['mpenalty']))
 			send.append(float(request.form['dratio']))
-			return str(tumor_size(send))
+
+			return "Predicted tumor size is :<b>"+str(tumor_size(send))+"</b>."
 		if request.form['submit']=="predict_cancer":
 			res=predict_cancer(upload_file(request.files['file1']))
 			if res['prediction']=="POSITIVE":
