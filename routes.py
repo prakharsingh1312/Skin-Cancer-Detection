@@ -28,7 +28,12 @@ def dashboard_page():
 			send.append(float(request.form['dratio']))
 			return str(tumor_size(send))
 		if request.form['submit']=="predict_cancer":
-			return predict_cancer(upload_file(request.files['file1']))
+			res=predict_cancer(upload_file(request.files['file1']))
+			if res['prediction']=="POSITIVE":
+				res2=predict_malig_type(res['path'])
+				return "Prelimnary tests reveal that the type of skin cancer identified is <b class='text-uppercase'>"+res2['type']+"</b> and the chances of it being malignant are <b>"+res2['probability']+"%</b>."
+			else:
+				return "Prelimnary tests reveal that the image you uploaded is <b>NOT IDENTIFIED</b> as a skin tumor. <br><b>Confidence of prediction: "+res['probability']+"</b><br> If you still want to proceed with the test click the button below.<br><div class='text-center'><button name='path' class='btn btn-primary btn-round' value='"+res['path']+"' id='force_check'>Proceed</button></div>"
 	title="Skin Cancer Detection"
 	page="Dashboard"
 	if 'user_id' not in session:

@@ -10,6 +10,7 @@ import hashlib
 from fastai import *
 from fastai.vision import *
 from werkzeug.utils import secure_filename
+from statistics import mode
 
 #Tables
 
@@ -37,7 +38,7 @@ class UserTable(db.Model):
 	role=db.Column('role',db.Integer)
 	user_activated=db.Column('user_activated',db.Integer)
 #db.drop_all()
-#db.create_all()
+db.create_all()
 #Functions
 #Login/Signup
 def crypt_password(password):
@@ -136,13 +137,40 @@ def tumor_size(tester):
 
 #Cancer Prediction
 def predict_cancer(image):
-	print(os.path.join(os.path.dirname(__file__),'static/uploads/'+image))
+	res={}
+	#print(os.path.join(os.path.dirname(__file__),'static/uploads/'+image))
 	model = load_learner(os.path.join(os.path.dirname(__file__),'large_files/'),'pseudo_binary.pkl')
 	dataset=['NEGATIVE','POSITIVE']
 	img=open_image(os.path.join(os.path.dirname(__file__),'static/uploads/'+image))
 	tens=model.predict(img)[-1].numpy()
 	tens1=model.predict(img)[-1].numpy()
-	return('Predicted <b>'+str(dataset[np.argmax(tens1)])+'</b> with probability <b>'+str(np.max(tens1))+'</b>')
+	res['prediction']=str(dataset[np.argmax(tens1)])
+	res['probability']=str(np.max(tens1))
+	res['path']=image
+	return res
+
+
+def predict_malig_type(image):
+	res={}
+	lister=['Actinic keratosis','Basal cell carcinoma','Benign keratosis','Dermatofibroma','Melanoma','Melanocytic nevus','Vascular lesion']
+	model=load_learner(os.path.join(os.path.dirname(__file__),'large_files/'),'malignant.pkl')
+	densenet=load_learner(os.path.join(os.path.dirname(__file__),'large_files/'),'densenet121.pkl')
+	resnet=load_learner(os.path.join(os.path.dirname(__file__),'large_files/'),'resnet50.pkl')
+	vgg16=load_learner(os.path.join(os.path.dirname(__file__),'large_files/'),'vgg16bn.pkl')
+	img=open_image(os.path.join(os.path.dirname(__file__),'static/uploads/'+image))
+	res['probability']=str(model.predict(img)[-1].numpy()[1])
+	tens1=densenet.predict(img)[-1].numpy()
+	tens2=resnet.predict(img)[-1].numpy()
+	tens3=vgg16.predict(img)[-1].numpy()
+	c1=lister[np.argmax(tens1)]
+	c2=lister[np.argmax(tens2)]
+	c3=lister[np.argmax(tens3)]
+	try:
+		g=mode([c1,c2,c3])
+	except:
+		g=c3
+	res['type']=g
+	return res
 
 
 
