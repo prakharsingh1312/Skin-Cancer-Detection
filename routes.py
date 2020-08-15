@@ -118,10 +118,10 @@ def pathology_page():
 			res=predict_cancer(upload_file(request.files['file1']))
 			if res['prediction']=="POSITIVE":
 				res2=predict_malig_type(res['path'])
-				return "<img src='./static/uploads/"+res['path']+"' class='rounded mx-auto d-block' alt='...'>Prelimnary tests reveal that the type of skin cancer identified is <b class='text-uppercase'>"+res2['type']+"</b> and the chances of it being malignant are <b>"+res2['probability']+"%</b>."
+				return "<img src='./static/uploads/output/"+res['path']+"' class='rounded mx-auto d-block' alt='...'>Prelimnary tests reveal that the type of skin cancer identified is <b class='text-uppercase'>"+res2['type']+"</b> and the chances of it being malignant are <b>"+res2['probability']+"%</b>."
 			else:
 				return "<img src='./static/uploads/"+res['path']+"' class='rounded mx-auto d-block' alt='...'>Prelimnary tests reveal that the image you uploaded is <b>NOT IDENTIFIED</b> as a skin tumor. <br><b>Confidence of prediction: "+res['probability']+"</b><br> If you still want to proceed with the test click the button below.<br><div class='text-center'><button name='path' class='btn btn-success btn-round' value='"+res['path']+"' id='force_check'>Proceed</button></div>"
 		if request.form['submit']=="force_check":
 			res2=predict_malig_type(request.form['path'])
-			return "<img src='./static/uploads/"+res2['path']+"' class='rounded mx-auto d-block' alt='...'>Prelimnary tests reveal that the type of skin cancer identified is <b class='text-uppercase'>"+res2['type']+"</b> and the chances of it being malignant are <b>"+res2['probability']+"%</b>."
+			return "<img src='./static/uploads/output/"+res2['path']+"' class='rounded mx-auto d-block' alt='...'>Prelimnary tests reveal that the type of skin cancer identified is <b class='text-uppercase'>"+res2['type']+"</b> and the chances of it being malignant are <b>"+res2['probability']+"%</b>."
 	return render_template('pathology.html',page=page,title=title,user=user)

@@ -11,6 +11,7 @@ from fastai import *
 from fastai.vision import *
 from werkzeug.utils import secure_filename
 from statistics import mode
+from detect import *
 
 #Tables
 
@@ -117,6 +118,7 @@ def predict_cancer(image):
 	model = load_learner(os.path.join(os.path.dirname(__file__),'large_files/'),'pseudo_binary.pkl')
 	dataset=['NEGATIVE','POSITIVE']
 	img=open_image(os.path.join(os.path.dirname(__file__),'static/uploads/'+image))
+	use_this(os.path.join(os.path.dirname(__file__),'static/uploads/'+image))
 	tens=model.predict(img)[-1].numpy()
 	tens1=model.predict(img)[-1].numpy()
 	res['prediction']=str(dataset[np.argmax(tens1)])
