@@ -85,31 +85,35 @@
                   <canvas id="sexRatio"></canvas>
                 </div>
                 <div class="card-body">
-                  <h4 class="card-title">Daily Sales</h4>
+                  <h4 class="card-title">Occurance</h4>
                   <p class="card-category">
-                    <span class="text-success"><i class="fa fa-long-arrow-up"></i> 55% </span> increase in today sales.</p>
+                    <span class="text-success">Genderwise percentage occurance.</p>
                 </div>
+<!--
                 <div class="card-footer">
                   <div class="stats">
                     <i class="material-icons">access_time</i> updated 4 minutes ago
                   </div>
                 </div>
+-->
               </div>
             </div>
             <div class="col-md-4">
               <div class="card card-chart">
                 <div class="card-header card-header-warning">
-                  <div class="ct-chart" id="websiteViewsChart"></div>
+                  <canvas id="ageRatio"></canvas>
                 </div>
                 <div class="card-body">
-                  <h4 class="card-title">Email Subscriptions</h4>
-                  <p class="card-category">Last Campaign Performance</p>
+                  <h4 class="card-title">Distribution</h4>
+                  <p class="card-category">Age Wise cases of skin cancer.</p>
                 </div>
+<!--
                 <div class="card-footer">
                   <div class="stats">
                     <i class="material-icons">access_time</i> campaign sent 2 days ago
                   </div>
                 </div>
+-->
               </div>
             </div>
             <div class="col-md-4">
@@ -177,4 +181,53 @@ var myPieChart = new Chart(ctx, {
 
 });
 </script>
-{% endblock %}
+
+<script>
+var c = document.getElementById('ageRatio');
+var data = {
+    datasets: [{
+        data: [{
+            x:15,
+            y:350
+        }],
+        borderColor: [
+        'rgba(255, 255, 255,1)',
+        'rgba(240, 150, 61,1)',
+        'rgba(196,44,33,1)'
+    ],
+    backgroundColor : [
+        'rgba(255, 255, 255,.5)',
+        'rgba(240, 150, 61,0.5)',
+        'rgba(196,44,33,0.5)'
+    ],
+    hoverBackgroundColor:[
+        'rgba(255, 255, 255,1)',
+        'rgba(240, 150, 61,1)',
+        'rgba(196,44,33,1)'
+    ]
+    
+    }],
+
+    // These labels appear in the legend and in the tooltips when hovering different arcs
+    labels: [
+        'Male',
+        'Female',
+        'Others'
+    ]
+};
+var options = {
+    legend:{
+        labels:{
+        boxWidth:10,
+        fontColor: '#fff',
+    }},
+};
+var myPieChart = new Chart(c, {
+    type: 'doughnut',
+    data: data,
+    options: options,
+    
+    
+});
+</script>{% endblock %}
+
