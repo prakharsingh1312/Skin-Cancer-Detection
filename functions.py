@@ -14,6 +14,10 @@ from statistics import mode
 from detect import *
 
 #Tables
+lang=db.Table('lang_doc',
+	db.Column('doc_id',db.Integer,db.ForeignKey('doctor_details.id')),
+	db.Column('lang_id',db.Integer,db.ForeignKey('languages_table.id'))
+)
 
 class Test_Graphs(db.Model):
 	__tablename__='TABLE 1'
@@ -36,8 +40,92 @@ class UserTable(db.Model):
 	gender=db.Column('gender' , db.String(1))
 	dob=db.Column('dob', db.Date)
 	password=db.Column('password',db.String(100))
+	image=db.Column('image' , db.String(100))
+	locality_id=db.Column('locality_id' , db.Integer,db.ForeignKey('locality_table.id'))
 	role=db.Column('role',db.Integer)
 	user_activated=db.Column('user_activated',db.Integer)
+	details=db.relationship('DoctorDetails',backref='doctor')
+	notifications=db.relationship('Notifications',backref='user')
+	prescriptions=db.relationship('Prescriptions',backref='patient')
+	#locality=db.relationship('Locality',backref='user')
+
+class DoctorDetails(db.Model):
+	__tablename__='doctor_details'
+	id=db.Column('id', db.Integer, primary_key=True)
+	user_id=db.Column('user_id',db.Integer,db.ForeignKey('user_table.id'))
+	qualification=db.Column('qual_id',db.Integer,db.ForeignKey('qualifications_table.id'))
+	department=db.Column('dept_id' , db.Integer,db.ForeignKey('departments_table.id'))
+	hospital_id=db.Column('hospital_id',db.Integer,db.ForeignKey('hospitals_table.id'))
+	experience=db.Column('doc_exp' , db.String(100))
+	#hospital=db.relationship('Hospital',backref='doctor')
+	prescriptions=db.relationship('Prescriptions',backref='doctor')
+
+class Qualifications(db.Model):
+	__tablename__='qualifications_table'
+	id=db.Column('id', db.Integer, primary_key=True)
+	qualification=db.Column('qualification' , db.String(100))
+	doctor=db.relationship('DoctorDetails',backref='qual_details')
+
+class Departments(db.Model):
+	__tablename__='departments_table'
+	id=db.Column('id', db.Integer, primary_key=True)
+	department=db.Column('department' , db.String(100))
+	doctor=db.relationship('DoctorDetails',backref='dept_details')
+
+class Languages(db.Model):
+	__tablename__='languages_table'
+	id=db.Column('id', db.Integer, primary_key=True)
+	language=db.Column('language',db.String(100))
+	doctors=db.relationship('DoctorDetails',secondary=lang,backref='doctors')
+
+class Notifications(db.Model):
+	__tablename__='notifications_table'
+	id=db.Column('id', db.Integer, primary_key=True)
+	user_id=db.Column('user_id',db.Integer,db.ForeignKey('user_table.id'))
+	desc=db.Column('desc',db.String(100))
+	link_to=db.Column('link_to',db.String(100))
+	time=db.Column('time',db.DateTime)
+
+class Appointments(db.Model):
+	__tablename__='appointments_table'
+	id=db.Column('id', db.Integer, primary_key=True)
+	time=db.Column('time',db.DateTime)
+	link_to=db.Column('link_to',db.String(100))
+	desc=db.Column('desc',db.String(100))
+	prescription_id=db.Column('patient_id',db.Integer,db.ForeignKey('prescriptions_table.id'))
+
+class Prescriptions(db.Model):
+	__tablename__='prescriptions_table'
+	id=db.Column('id', db.Integer, primary_key=True)
+	patient_id=db.Column('patient_id',db.Integer,db.ForeignKey('user_table.id'))
+	doctor_id=db.Column('doctor_id',db.Integer,db.ForeignKey('doctor_details.id'))
+	desc=db.Column('desc',db.String(10000))
+	image=db.Column('image_path',db.String(10000))
+	cancer_probability=db.Column('cancer_probability',db.Float)
+	malignant_probability=db.Column('malignant_probability',db.Float)
+	type_prediction=db.Column('type',db.Integer,db.ForeignKey('cancer_types.id'))
+	time_of_examination=db.Column('time_of_examination',db.DateTime)
+	appointments=db.relationship('Appointments',backref='prescription')
+
+class CancerTypes(db.Model):
+	__tablename__='cancer_types'
+	id=db.Column('id', db.Integer, primary_key=True)
+	type=db.Column('type',db.String(100))
+	home_remedy=db.Column('home_remedy',db.String(10000))
+	patients=db.relationship('Prescriptions',backref='cancer_type')
+
+class Hospitals(db.Model):
+	__tablename__='hospitals_table'
+	id=db.Column('id', db.Integer, primary_key=True)
+	name=db.Column('name',db.String(100))
+	doctors=db.relationship('DoctorDetails',backref='hospital')
+
+class Locality(db.Model):
+	__tablename__='locality_table'
+	id=db.Column('id', db.Integer, primary_key=True)
+	name=db.Column('name',db.String(1000))
+	user=db.relationship('UserTable',backref='locality')
+
 #db.drop_all()
 db.create_all()
 #Functions
