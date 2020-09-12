@@ -127,7 +127,7 @@ class Locality(db.Model):
 	user=db.relationship('UserTable',backref='locality')
 
 db.drop_all()
-db.create_all()
+#db.create_all()
 #Functions
 #Login/Signup
 def crypt_password(password):
