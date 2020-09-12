@@ -64,13 +64,13 @@ class Qualifications(db.Model):
 	__tablename__='qualifications_table'
 	id=db.Column('id', db.Integer, primary_key=True)
 	qualification=db.Column('qualification' , db.String(100))
-	doctor=db.relationship('DoctorDetails',backref='details')
+	doctor=db.relationship('DoctorDetails',backref='qual_details')
 
 class Departments(db.Model):
 	__tablename__='departments_table'
 	id=db.Column('id', db.Integer, primary_key=True)
 	department=db.Column('department' , db.String(100))
-	doctor=db.relationship('DoctorDetails',backref='details')
+	doctor=db.relationship('DoctorDetails',backref='dept_details')
 
 class Languages(db.Model):
 	__tablename__='languages_table'
