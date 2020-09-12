@@ -126,7 +126,7 @@ class Locality(db.Model):
 	name=db.Column('name',db.String(1000))
 	user=db.relationship('UserTable',backref='locality')
 
-db.drop_all()
+#db.drop_all()
 db.create_all()
 #Functions
 #Login/Signup
