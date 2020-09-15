@@ -1,0 +1,30 @@
+{% extends 'base.html' %}{%block content%}
+<div class="row">
+{% for doctor in doctors %}
+
+<div class="col-md-4">
+             <div class="card card-profile">
+               <div class="card-avatar">
+                 <a href="javascript:;">
+                   <img class="img" src="/static/img/{{doctor.name}}.jpg" />
+                 </a>
+               </div>
+               <div class="card-body">
+                 <h6 class="card-category text-gray">{{department[details[doctor.id].department].department}}</h6>
+                 <h4 class="card-title">{{doctor.name}}</h4>
+                 <p class="card-description">
+                   {{hospital[details[doctor.id].hospital_id].name}}<br>
+                   {{qualification[details[doctor.id].qualification].qualification}}<br>
+                   {% if details[doctor.id].experience!="" %}Experience :{{details[doctor.id].experience}} Years{% endif %}
+                 </p>
+                 <a href="javascript:;" class="btn btn-success btn-round">Book Appointment</a>
+               </div>
+             </div>
+           </div>
+{% endfor %}
+</div>
+{% endblock %}
+{% block scripts %}
+
+
+{% endblock %}
