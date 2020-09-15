@@ -44,7 +44,7 @@ class UserTable(db.Model):
 	locality_id=db.Column('locality_id' , db.Integer,db.ForeignKey('locality_table.id'))
 	role=db.Column('role',db.Integer)
 	user_activated=db.Column('user_activated',db.Integer)
-	details=db.relationship('DoctorDetails',backref='doctor')
+	details=db.relationship('DocDetails',backref='doctor')
 	notifications=db.relationship('Notifications',backref='user')
 	prescriptions=db.relationship('Prescriptions',backref='patient')
 	#locality=db.relationship('Locality',backref='user')
@@ -64,19 +64,19 @@ class Qualifications(db.Model):
 	__tablename__='qualifications_table'
 	id=db.Column('id', db.Integer, primary_key=True)
 	qualification=db.Column('qualification' , db.String(100))
-	doctor=db.relationship('DoctorDetails',backref='qual_details')
+	doctor=db.relationship('DocDetails',backref='qual_details')
 
 class Departments(db.Model):
 	__tablename__='departments_table'
 	id=db.Column('id', db.Integer, primary_key=True)
 	department=db.Column('department' , db.String(100))
-	doctor=db.relationship('DoctorDetails',backref='dept_details')
+	doctor=db.relationship('DocDetails',backref='dept_details')
 
 class Languages(db.Model):
 	__tablename__='languages_table'
 	id=db.Column('id', db.Integer, primary_key=True)
 	language=db.Column('language',db.String(100))
-	doctors=db.relationship('DoctorDetails',secondary=lang,backref='doctors')
+	doctors=db.relationship('DocDetails',secondary=lang,backref='doctors')
 
 class Notifications(db.Model):
 	__tablename__='notifications_table'
@@ -118,7 +118,7 @@ class Hospitals(db.Model):
 	__tablename__='hospitals_table'
 	id=db.Column('id', db.Integer, primary_key=True)
 	name=db.Column('name',db.String(100))
-	doctors=db.relationship('DoctorDetails',backref='hospital')
+	doctors=db.relationship('DocDetails',backref='hospital')
 
 class Locality(db.Model):
 	__tablename__='locality_table'
@@ -249,3 +249,7 @@ def upload_file(file):
 #print(tumor_size(tester))
 #Charts Data
 #def
+#doctorsPage
+def show_doctors():
+	data=db.session.query(DoctorDetails).all();
+	return data

@@ -125,3 +125,19 @@ def pathology_page():
 			res2=predict_malig_type(request.form['path'])
 			return "<img src='./static/uploads/output/"+res2['path']+"' class='rounded mx-auto d-block' alt='...'>Prelimnary tests reveal that the type of skin cancer identified is <b class='text-uppercase'>"+res2['type']+"</b> and the chances of it being malignant are <b>"+res2['probability']+"%</b>."
 	return render_template('pathology.html',page=page,title=title,user=user)
+
+@app.route("/doctors" , methods=['GET' , 'POST'])
+def doctors_page():
+	title="Doctors | Skin Cancer Detection"
+	page="Doctors"
+	user="Not Logged In"
+	if 'user_id' not in session:
+		print ("HERE")
+		return redirect(url_for('dashboard_page'))
+	else:
+		user=session['user_name']
+	data=show_doctors()
+	for doctor in data:
+		print(doctor.name)
+	print (data)
+	return render_template('doctors.html',title=title,page=page,user=user,data=data)
