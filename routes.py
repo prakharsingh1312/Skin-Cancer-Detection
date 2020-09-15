@@ -132,12 +132,20 @@ def doctors_page():
 	page="Doctors"
 	user="Not Logged In"
 	if 'user_id' not in session:
-		print ("HERE")
 		return redirect(url_for('dashboard_page'))
 	else:
 		user=session['user_name']
-	data=show_doctors()
-	for doctor in data:
-		print(doctor.name)
-	print (data)
-	return render_template('doctors.html',title=title,page=page,user=user,data=data)
+	doctors,details,department,qualification,hospital=show_doctors()
+	return render_template('doctors.html',title=title,page=page,user=user,doctors=doctors,details=details,department=department,qualification=qualification,hospital=hospital)
+
+
+@app.route("/appointments" , methods=['GET' , 'POST'])
+def appointments_page():
+	title="Appointments | Skin Cancer Detection"
+	page="Appointments"
+	user="Not Logged In"
+	if 'user_id' not in session:
+		return redirect(url_for('dashboard_page'))
+	else:
+		user=session['user_name']
+	return render_template('doctors.html',title=title,page=page,user=user)
