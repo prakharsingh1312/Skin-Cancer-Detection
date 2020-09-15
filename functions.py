@@ -126,8 +126,8 @@ class Locality(db.Model):
 	name=db.Column('name',db.String(1000))
 	user=db.relationship('UserTable',backref='locality')
 
-db.drop_all()
-#db.create_all()
+#db.drop_all()
+db.create_all()
 #Functions
 #Login/Signup
 def crypt_password(password):
@@ -249,3 +249,24 @@ def upload_file(file):
 #print(tumor_size(tester))
 #Charts Data
 #def
+#doctorsPage
+def show_doctors():
+	doctors=UserTable.query.filter_by(role=2).all()
+	det=DoctorDetails.query.all();
+	dept=Departments.query.all();
+	qual=Qualifications.query.all();
+	hosp=Hospitals.query.all();
+	details={}
+	for detail in det:
+		details[detail.user_id]=detail
+	department={}
+	for dep in dept:
+		department[dep.id]=dep
+	qualification={}
+	for q in qual:
+		qualification[q.id]=q
+	hospital={}
+	for h in hosp:
+		hospital[h.id]=h
+
+	return doctors,details,department,qualification,hospital
