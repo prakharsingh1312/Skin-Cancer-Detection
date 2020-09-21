@@ -18,7 +18,7 @@
                    {{qualification[details[doctor.id].qualification].qualification}}<br>
                    {% if details[doctor.id].experience!="" %}Experience :{{details[doctor.id].experience}} Years{% endif %}
                  </p>
-                 <a href="javascript:;" class="btn btn-success btn-round">Book Appointment</a>
+                 <a href="./book_appointment?doctor_id={{doctor.id}}&pres_id={{pres}}" class="btn btn-success btn-round">Book Appointment</a>
                </div>
              </div>
            </div>
@@ -26,7 +26,7 @@
 </div>
 {% else %}
 <div class="row">
-  <div class="col-md-12">
+  <div class="col-md-12 mr-auto">
                <div class="card">
                  <div class="card-header card-header-success">
                    <h4 class="card-title ">Previous Tests</h4>
@@ -34,7 +34,7 @@
                  </div>
                  <div class="card-body overflow-auto">
                    <div class="table-responsive">
-                     <table class="table table-hover">
+                     <table class="table table-hover text-center">
                        <thead class=" text-success">
                          <th>
                            S.No
@@ -66,10 +66,13 @@
                              <img class="img img-thumbnail" style="width:7em;" src="./static/uploads/{{report.image}}"
                            </td>
                            <td>
-                             <button type="button" class="btn btn-small btn-round btn-success" name="Show Report">Show Report</button>
+                             <a href="" class="btn btn-sm  btn-success" name="Show Report">Show Report</a>
                            </td>
                            <td >
-                             <button type="button" class="btn btn-small btn-round btn-success" name="Book Appointment">Book Appontment</button>
+
+                             <a href="./book_appointment?doctor_id={{doctor}}&pres_id={{report.id}}" class="btn btn-sm  btn-success" name="Book Appointment">Book Appontment</a><br>
+                             <a href="" class="text-success small" name="Previous Appointments">Previous Appontments</a>
+
                            </td>
                         </tr>
                         {% endfor %}

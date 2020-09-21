@@ -1,6 +1,65 @@
 {% extends 'base.html' %}{%block content%}
+<div class="row">
+  <div class="col-md-12 mr-auto">
+               <div class="card">
+                 <div class="card-header card-header-success">
+                   <h4 class="card-title ">Upcoming Appointments</h4>
+                   <p class="card-category"> Details of your upcoming appointments.</p>
+                 </div>
+                 <div class="card-body overflow-auto">
+                   <div class="table-responsive">
+                     <table class="table table-hover text-center">
+                       <thead class=" text-success">
+                         <th>
+                           S.No
+                         </th>
+                         <th>
+                           Doctor
+                         </th>
+                         <th>
+                           Hospital
+                         </th>
+                         <th>
+                           Report
+                         </th>
+                         <th>
+                           Date & Meeting Link
+                         </th>
+                       </thead>
+                       <tbody >
+{% for a in data  %}
 
-% endblock %}
+                         <tr>
+                           <td>
+                            {{loop.index}}
+                           </td>
+                           <td>
+                              <img class="img img-thumbnail" style="width:7em;" src="./static/img/{{a.UserTable.name}}.jpg"><br>
+                             {{a.UserTable.name}}
+                           </td>
+                           <td>
+                             {{a.Hospitals.name}}
+                           </td>
+                           <td>
+                             <img class="img img-thumbnail" style="width:7em;" src="./static/uploads/{{a.Prescriptions.image}}"><br>
+                             <a href="" class="btn btn-sm  btn-success" name="Show Report">Show Report</a>
+                           </td>
+                           <td >
+                              {{a.Appointments.time}}<br>
+                             <a href="{{a.Appointments.link_to}}" class="btn btn-sm  btn-success" name="Meeting Link">Meeting Link</a><br>
+
+
+                           </td>
+                        </tr>
+                        {% endfor %}
+                       </tbody>
+                     </table>
+                   </div>
+                 </div>
+               </div>
+             </div>
+  </div>
+{% endblock %}
 {% block scripts %}
 
 

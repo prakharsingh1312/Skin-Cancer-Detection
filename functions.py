@@ -288,3 +288,10 @@ def show_history():
 	area={"NF":"Neck/Face","UA":"Upper Abdomen","LA":"Lower Abdomen","A":"Arms"}
 	history=Prescriptions.query.filter_by(patient_id = session['user_id']).all()
 	return history,area
+def book_appointment(p):
+	appoint=Appointments(prescription_id=p['pres_id'], doctor_id=p['doctor_id'])
+	db.session.add(appoint)
+	db.session.commit()
+def show_appointments():
+	data=db.session.query(UserTable,Prescriptions,Appointments,DoctorDetails,Hospitals).filter(db.and_(Prescriptions.patient_id==session['user_id'],Appointments.doctor_id==UserTable.id,Appointments.prescription_id==Prescriptions.id,DoctorDetails.user_id==UserTable.id,Hospitals.id==DoctorDetails.hospital_id)).all()
+	return data
