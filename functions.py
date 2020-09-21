@@ -12,6 +12,8 @@ from fastai.vision import *
 from werkzeug.utils import secure_filename
 from statistics import mode
 from detect import *
+import uuid
+import datetime
 
 #Tables
 lang=db.Table('lang_doc',
@@ -58,7 +60,7 @@ class DoctorDetails(db.Model):
 	hospital_id=db.Column('hospital_id',db.Integer,db.ForeignKey('hospitals_table.id'))
 	experience=db.Column('doc_exp' , db.String(100))
 	#hospital=db.relationship('Hospital',backref='doctor')
-	prescriptions=db.relationship('Prescriptions',backref='doctor')
+	appointments=db.relationship('Appointments',backref='doctor')
 
 class Qualifications(db.Model):
 	__tablename__='qualifications_table'
@@ -93,18 +95,20 @@ class Appointments(db.Model):
 	link_to=db.Column('link_to',db.String(100))
 	desc=db.Column('desc',db.String(100))
 	prescription_id=db.Column('patient_id',db.Integer,db.ForeignKey('prescriptions_table.id'))
-
+	doctor_id=db.Column('doctor_id',db.Integer,db.ForeignKey('doctor_details.id'))
 class Prescriptions(db.Model):
 	__tablename__='prescriptions_table'
 	id=db.Column('id', db.Integer, primary_key=True)
 	patient_id=db.Column('patient_id',db.Integer,db.ForeignKey('user_table.id'))
-	doctor_id=db.Column('doctor_id',db.Integer,db.ForeignKey('doctor_details.id'))
+	#doctor_id=db.Column('doctor_id',db.Integer,db.ForeignKey('doctor_details.id'))
+	affected_area=db.Column('affected_area',db.String(10))
 	desc=db.Column('desc',db.String(10000))
 	image=db.Column('image_path',db.String(10000))
+	cancer=db.Column('cancer',db.String(10))
 	cancer_probability=db.Column('cancer_probability',db.Float)
 	malignant_probability=db.Column('malignant_probability',db.Float)
 	type_prediction=db.Column('type',db.Integer,db.ForeignKey('cancer_types.id'))
-	time_of_examination=db.Column('time_of_examination',db.DateTime)
+	time_of_examination=db.Column('time_of_examination',db.DateTime, default=datetime.datetime.utcnow)
 	appointments=db.relationship('Appointments',backref='prescription')
 
 class CancerTypes(db.Model):
@@ -127,7 +131,7 @@ class Locality(db.Model):
 	user=db.relationship('UserTable',backref='locality')
 
 #db.drop_all()
-db.create_all()
+#db.create_all()
 #Functions
 #Login/Signup
 def crypt_password(password):
@@ -200,7 +204,8 @@ def tumor_size(tester):
 	return (model.predict(tester)[0])
 
 #Cancer Prediction
-def predict_cancer(image):
+def predict_cancer(image,affected_area):
+
 	res={}
 	#print(os.path.join(os.path.dirname(__file__),'static/uploads/'+image))
 	model = load_learner(os.path.join(os.path.dirname(__file__),'large_files/'),'pseudo_binary.pkl')
@@ -212,10 +217,14 @@ def predict_cancer(image):
 	res['prediction']=str(dataset[np.argmax(tens1)])
 	res['probability']=str(np.max(tens1))
 	res['path']=image
+	pres=Prescriptions(patient_id=session['user_id'],affected_area=affected_area,image=image,cancer_probability=float(res['probability']),cancer=res['prediction'])
+	db.session.add(pres)
+	db.session.commit()
 	return res
 
 
 def predict_malig_type(image):
+	pres=Prescriptions.query.filter_by(image=image).first()
 	res={}
 	lister=['Actinic keratosis','Basal cell carcinoma','Benign keratosis','Dermatofibroma','Melanoma','Melanocytic nevus','Vascular lesion']
 	model=load_learner(os.path.join(os.path.dirname(__file__),'large_files/'),'malignant.pkl')
@@ -236,13 +245,18 @@ def predict_malig_type(image):
 		g=c3
 	res['type']=g
 	res['path']=image
+	pres.malignant_probability=float(res['probability'])
+	pres.type_prediction=CancerTypes.query.filter_by(type=g).first().id
+	db.session.commit()
 	return res
 
 
 
 def upload_file(file):
-        file.save(os.path.join(os.path.dirname(__file__),'static/uploads/'+secure_filename(file.filename)))
-        return secure_filename(file.filename)
+	last=file.filename.split('.')
+	unique_filename = str(uuid.uuid4())+"."+last[-1]
+	file.save(os.path.join(os.path.dirname(__file__),'static/uploads/'+secure_filename(unique_filename)))
+	return secure_filename(unique_filename)
 
 
 
@@ -270,3 +284,7 @@ def show_doctors():
 		hospital[h.id]=h
 
 	return doctors,details,department,qualification,hospital
+def show_history():
+	area={"NF":"Neck/Face","UA":"Upper Abdomen","LA":"Lower Abdomen","A":"Arms"}
+	history=Prescriptions.query.filter_by(patient_id = session['user_id']).all()
+	return history,area
