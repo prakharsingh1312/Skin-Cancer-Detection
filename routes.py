@@ -149,7 +149,8 @@ def appointments_page():
 		return redirect(url_for('dashboard_page'))
 	else:
 		user=session['user_name']
-	return render_template('doctors.html',title=title,page=page,user=user)
+	data=show_appointments()
+	return render_template('appointments.html',title=title,page=page,user=user,data=data)
 @app.route("/book_appointment" , methods=['GET' , 'POST'])
 def book_appointment_page():
 	title="Appointment | Skin Cancer Detection"
