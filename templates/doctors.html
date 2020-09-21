@@ -17,7 +17,7 @@
                    {{qualification[details[doctor.id].qualification].qualification}}<br>
                    {% if details[doctor.id].experience!="" %}Experience :{{details[doctor.id].experience}} Years{% endif %}
                  </p>
-                 <a href="javascript:;" class="btn btn-success btn-round">Book Appointment</a>
+                 <a href="./book_appointment?doctor_id={{doctor.id}}" class="btn btn-success btn-round">Book Appointment</a>
                </div>
              </div>
            </div>

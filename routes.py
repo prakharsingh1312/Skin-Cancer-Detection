@@ -115,16 +115,17 @@ def pathology_page():
 
 			return "Predicted tumor size is :<b>"+str(tumor_size(send))+"</b>."
 		if request.form['submit']=="predict_cancer":
-			res=predict_cancer(upload_file(request.files['file1']))
+			res=predict_cancer(upload_file(request.files['file1']),request.form['affected_area'])
+
 			if res['prediction']=="POSITIVE":
-				res2=predict_malig_type(res['path'])
-				return "<img src='./static/uploads/output/"+res['path']+"' class='rounded mx-auto d-block' alt='...'>Prelimnary tests reveal that the type of skin cancer identified is <b class='text-uppercase'>"+res2['type']+"</b> and the chances of it being malignant are <b>"+res2['probability']+"%</b>."
+				return "<div ><img src='./static/uploads/"+res['path']+"' class='w-50 rounded mx-auto d-block' alt='...'></div>Prelimnary tests reveal that the image you uploaded is <b>IDENTIFIED</b> as a skin tumor. <br><b>Confidence of prediction: "+res['probability']+"</b><br>To proceed with the test click the button below.<br><div class='text-center'><button name='path' class='btn btn-success btn-round' value='"+res['path']+"' id='force_check'>Proceed</button></div>"
 			else:
-				return "<img src='./static/uploads/"+res['path']+"' class='rounded mx-auto d-block' alt='...'>Prelimnary tests reveal that the image you uploaded is <b>NOT IDENTIFIED</b> as a skin tumor. <br><b>Confidence of prediction: "+res['probability']+"</b><br> If you still want to proceed with the test click the button below.<br><div class='text-center'><button name='path' class='btn btn-success btn-round' value='"+res['path']+"' id='force_check'>Proceed</button></div>"
+				return "<div ><img src='./static/uploads/"+res['path']+"' class='w-50 rounded mx-auto d-block' alt='...'></div>Prelimnary tests reveal that the image you uploaded is <b>NOT IDENTIFIED</b> as a skin tumor. <br><b>Confidence of prediction: "+res['probability']+"</b><br> If you still want to proceed with the test click the button below.<br><div class='text-center'><button name='path' class='btn btn-success btn-round' value='"+res['path']+"' id='force_check'>Proceed</button></div>"
 		if request.form['submit']=="force_check":
 			res2=predict_malig_type(request.form['path'])
-			return "<img src='./static/uploads/output/"+res2['path']+"' class='rounded mx-auto d-block' alt='...'>Prelimnary tests reveal that the type of skin cancer identified is <b class='text-uppercase'>"+res2['type']+"</b> and the chances of it being malignant are <b>"+res2['probability']+"%</b>."
-	return render_template('pathology.html',page=page,title=title,user=user)
+			return "<div ><img src='./static/uploads/output/"+res2['path']+"' class='w-50 rounded mx-auto d-block' alt='...'></div>Prelimnary tests reveal that the type of skin cancer identified is <b class='text-uppercase'>"+res2['type']+"</b> and the chances of it being malignant are <b>"+res2['probability']+"%</b>."
+	reports,area=show_history()
+	return render_template('pathology.html',page=page,title=title,user=user,reports=reports,area=area)
 
 @app.route("/doctors" , methods=['GET' , 'POST'])
 def doctors_page():
@@ -149,3 +150,27 @@ def appointments_page():
 	else:
 		user=session['user_name']
 	return render_template('doctors.html',title=title,page=page,user=user)
+@app.route("/book_appointment" , methods=['GET' , 'POST'])
+def book_appointment_page():
+	title="Appointment | Skin Cancer Detection"
+	page="Appointment"
+	user="Not Logged In"
+	if 'user_id' not in session:
+		return redirect(url_for('dashboard_page'))
+	else:
+		user=session['user_name']
+	if('pres_id' not in request.args):
+		reports,area=show_history()
+		msg="Please select a prescription."
+		flash(msg,"info")
+		return render_template('book.html',title=title,page=page,user=user,doc=1,reports=reports,area=area,doctor=request.args['doctor_id'])
+	elif('doctor_id' not in request.args):
+		doctors,details,department,qualification,hospital=show_doctors()
+		msg="Please select a doctor."
+		flash(msg,"info")
+		return render_template('book.html',title=title,page=page,user=user,doctors=doctors,details=details,department=department,qualification=qualification,hospital=hospital,doc=0,pres=request.args['pres_id'])
+	else:
+		book_appointment(request.args);
+		msg="Appointment Booked."
+		flash(msg,"success")
+		return redirect(url_for('appointments_page'));
