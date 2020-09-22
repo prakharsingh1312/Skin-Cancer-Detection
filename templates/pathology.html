@@ -36,7 +36,7 @@
 
               <div class="form-group">
                 <label for="exampleFormControlSelect1">Location:</label>
-                <select class="form-control selectpicker" data-style="btn btn-link" id="locstion" name='gender' style="all:none;" required>
+                <select class="form-control selectpicker" data-style="btn btn-link" id="locstion" name='affected_area' style="all:none;" required>
                   <option value="NF">Neck/Face</option>
                   <option value="UA">Upper Abdomen</option>
                   <option value="LA">Lower Abdomen</option>
@@ -157,6 +157,64 @@
     </div>
   </div>
 </div>
+<div class="row">
+  <div class="col-md-12 mr-auto">
+               <div class="card">
+                 <div class="card-header card-header-success">
+                   <h4 class="card-title ">Previous Tests</h4>
+                   <p class="card-category"> Details of your past examinations.</p>
+                 </div>
+                 <div class="card-body overflow-auto">
+                   <div class="table-responsive">
+                     <table class="table table-hover text-center">
+                       <thead class=" text-success">
+                         <th>
+                           S.No
+                         </th>
+                         <th>
+                           Affected Area
+                         </th>
+                         <th>
+                           Image
+                         </th>
+                         <th>
+                           Report
+                         </th>
+                         <th>
+                           Appointments
+                         </th>
+                       </thead>
+                       <tbody >
+{% for report in reports  %}
+
+                         <tr>
+                           <td>
+                            {{loop.index}}
+                           </td>
+                           <td>
+                             {{area[report.affected_area]}}
+                           </td>
+                           <td>
+                             <img class="img img-thumbnail" style="width:7em;" src="./static/uploads/{{report.image}}"
+                           </td>
+                           <td>
+                             <a href="" class="btn btn-sm  btn-success" name="Show Report">Show Report</a>
+                           </td>
+                           <td >
+
+                             <a href="./book_appointment?pres_id={{report.id}}" class="btn btn-sm  btn-success" name="Book Appointment">Book Appontment</a><br>
+                             <a href="./book_appointment?pres_id={{report.id}}" class="text-success small" name="Previous Appointments">Previous Appontments</a>
+
+                           </td>
+                        </tr>
+                        {% endfor %}
+                       </tbody>
+                     </table>
+                   </div>
+                 </div>
+               </div>
+             </div>
+  </div>
 {% endblock %}
 {% block scripts %}
 <script>
