@@ -2,3 +2,4 @@
 **/__pycache__
 **/large_files
 **/static/uploads
+/config.py

@@ -14,6 +14,7 @@ from statistics import mode
 from detect import *
 import uuid
 import datetime
+from flask_weasyprint import HTML, render_pdf
 
 #Tables
 lang=db.Table('lang_doc',
@@ -295,3 +296,9 @@ def book_appointment(p):
 def show_appointments():
 	data=db.session.query(UserTable,Prescriptions,Appointments,DoctorDetails,Hospitals).filter(db.and_(Prescriptions.patient_id==session['user_id'],Appointments.doctor_id==UserTable.id,Appointments.prescription_id==Prescriptions.id,DoctorDetails.user_id==UserTable.id,Hospitals.id==DoctorDetails.hospital_id)).all()
 	return data
+def get_report(pres_id,app_id=0):
+	if app_id==0:
+		user_data=db.session.query(UserTable).filter(UserTable.id==session['user_id']).first()
+		data=db.session.query(Prescriptions,CancerTypes).filter(db.and_(Prescriptions.id==pres_id,Prescriptions.type_prediction==CancerTypes.id)).first()
+		area={"NF":"Neck/Face","UA":"Upper Abdomen","LA":"Lower Abdomen","A":"Arms"}
+		return user_data,data,area

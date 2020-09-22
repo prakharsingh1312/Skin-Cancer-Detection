@@ -174,4 +174,15 @@ def book_appointment_page():
 		book_appointment(request.args);
 		msg="Appointment Booked."
 		flash(msg,"success")
-		return redirect(url_for('appointments_page'));
+		return redirect(url_for('appointments_page'))
+@app.route("/report" , methods=['GET' , 'POST'])
+def report_page():
+	title="Report | Skin Cancer Detection"
+	user_data,data,area=get_report(request.args['pres_id'])
+	rendered=render_template('report.html',title=title,user_data=user_data,data=data,area=area,gender={'M':"Male",'F':"Female"})
+	return render_pdf(HTML(string=rendered))
+@app.route("/report2" , methods=['GET' , 'POST'])
+def report2_page():
+	title="Report | Skin Cancer Detection"
+	user_data,data,area=get_report(request.args['pres_id'])
+	return render_template('report.html',title=title,user_data=user_data,data=data,area=area,gender={'M':"Male",'F':"Female"})
