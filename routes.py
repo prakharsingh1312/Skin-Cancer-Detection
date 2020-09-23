@@ -170,6 +170,8 @@ def book_appointment_page():
 		msg="Please select a doctor."
 		flash(msg,"info")
 		return render_template('book.html',title=title,page=page,user=user,doctors=doctors,details=details,department=department,qualification=qualification,hospital=hospital,doc=0,pres=request.args['pres_id'])
+	elif 'time' not in request.args:
+		return render_template('book.html',title=title,page=page,user=user,doctor=request.args['doctor_id'],doc=2,pres=request.args['pres_id'])
 	else:
 		book_appointment(request.args);
 		msg="Appointment Booked."

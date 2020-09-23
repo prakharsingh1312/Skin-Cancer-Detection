@@ -24,7 +24,7 @@
            </div>
 {% endfor %}
 </div>
-{% else %}
+{% elif doc==1 %}
 <div class="row">
   <div class="col-md-12 mr-auto">
                <div class="card">
@@ -83,10 +83,50 @@
                </div>
              </div>
   </div>
+  {% else %}
+  <div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6 mr-auto">
+                 <div class="card">
+                   <div class="card-header card-header-success">
+                     <h4 class="card-title ">Date & Time</h4>
+                     <p class="card-category"> Please Select Date & Time for Appointment.</p>
+                   </div>
+                   <div class="card-body overflow-auto text-center">
+
+     <input type="text" class="btn btn-round btn-success datetimepicker mx-auto" /><br>
+     <button id="submit" class="form-group btn btn-success btn-sm">Confirm Booking</button>
+
+</div>
+</div>
+</div>
+</div>
+
+
+
 {% endif %}
 
 {% endblock %}
 {% block scripts %}
-
+<script type="text/javascript">
+  $('.datetimepicker').datetimepicker({
+      icons: {
+          time: "fa fa-clock-o",
+          date: "fa fa-calendar",
+          up: "fa fa-chevron-up",
+          down: "fa fa-chevron-down",
+          previous: 'fa fa-chevron-left',
+          next: 'fa fa-chevron-right',
+          today: 'fa fa-screenshot',
+          clear: 'fa fa-trash',
+          close: 'fa fa-remove'
+      },
+      format: 'YYYY-MM-DD HH:mm'
+  });
+$(document).on('click','#submit',function(){
+  var value=$('.datetimepicker').val();
+  window.location.href="./book_appointment?pres_id={{pres}}&doctor_id={{doctor}}&time="+value;
+})
+</script>
 
 {% endblock %}

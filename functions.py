@@ -290,7 +290,7 @@ def show_history():
 	history=Prescriptions.query.filter_by(patient_id = session['user_id']).all()
 	return history,area
 def book_appointment(p):
-	appoint=Appointments(prescription_id=p['pres_id'], doctor_id=p['doctor_id'])
+	appoint=Appointments(prescription_id=p['pres_id'], doctor_id=p['doctor_id'], time=p['time'])
 	db.session.add(appoint)
 	db.session.commit()
 def show_appointments():

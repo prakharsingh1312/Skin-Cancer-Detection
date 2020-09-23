@@ -35,24 +35,28 @@
               <p>User Profile</p>
             </a>
           </li>
-          <li class="nav-item  {% if page=='Pathology' %}active{% endif %}">
-            <a class="nav-link" href="./pathology">
-              <i class="material-icons">content_paste</i>
-              <p>Pathology</p>
-            </a>
-          </li>
-          <li class="nav-item  {% if page=='Doctors' %}active{% endif %}">
-            <a class="nav-link" href="./doctors">
-              <i class="material-icons">supervisor_account</i>
-              <p>Doctors</p>
-            </a>
-          </li>
-            <li class="nav-item  {% if page=='Appointments' %}active{% endif %}">
-            <a class="nav-link" href="./appointments">
-              <i class="material-icons">library_books</i>
-              <p>Appointments</p>
-            </a>
-          </li>
+
+          {% if session['user_role']==3 %}
+            <li class="nav-item  {% if page=='Pathology' %}active{% endif %}">
+              <a class="nav-link" href="./pathology">
+                <i class="material-icons">content_paste</i>
+                <p>Pathology</p>
+              </a>
+            </li>
+            <li class="nav-item  {% if page=='Doctors' %}active{% endif %}">
+              <a class="nav-link" href="./doctors">
+                <i class="material-icons">supervisor_account</i>
+                <p>Doctors</p>
+              </a>
+            </li>
+            {%endif%}
+          <li class="nav-item  {% if page=='Appointments' %}active{% endif %}">
+          <a class="nav-link" href="./appointments">
+            <i class="material-icons">library_books</i>
+            <p>Appointments</p>
+          </a>
+        </li>
+
           <li class="nav-item ">
             <a class="nav-link" href="./map.html">
               <i class="material-icons">location_ons</i>
