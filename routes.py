@@ -178,11 +178,19 @@ def book_appointment_page():
 @app.route("/report" , methods=['GET' , 'POST'])
 def report_page():
 	title="Report | Skin Cancer Detection"
-	user_data,data,area=get_report(request.args['pres_id'])
-	rendered=render_template('report.html',title=title,user_data=user_data,data=data,area=area,gender={'M':"Male",'F':"Female"})
+	app_id=0
+	if 'pres_id' in request.args:
+		user_data,data,area=get_report(request.args['pres_id'])
+	elif 'app_id' in request.args:
+		app_id=1
+		user_data,data,area=get_report(0,request.args['app_id'])
+	rendered=render_template('report.html',title=title,user_data=user_data,data=data,area=area,gender={'M':"Male",'F':"Female"},app_id=app_id)
 	return render_pdf(HTML(string=rendered))
 @app.route("/report2" , methods=['GET' , 'POST'])
 def report2_page():
 	title="Report | Skin Cancer Detection"
-	user_data,data,area=get_report(request.args['pres_id'])
-	return render_template('report.html',title=title,user_data=user_data,data=data,area=area,gender={'M':"Male",'F':"Female"})
+	if 'pres_id' in request.args:
+		user_data,data,area=get_report(request.args['pres_id'])
+	elif 'app_id' in request.args:
+		user_data,data,area=get_report(0,request.args['app_id'])
+	return render_template('report.html',title=title,user_data=user_data,data=data,area=area,gender={'M':"Male",'F':"Female"},app_id=1)

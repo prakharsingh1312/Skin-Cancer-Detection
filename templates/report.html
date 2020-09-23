@@ -39,7 +39,7 @@
   Location:<span class="ml-1"style="font-weight: 600;"></span><br>
   </div>
   <div class="float-right mr-0">
-    <img src="./static/img/user.jpg" class="img-thumbnail mr-auto">
+    <img src="./static/img/user.jpg" style="max-width:15em;" class="img-thumbnail mr-0">
 </div>
 </div>
 <div class="row">
@@ -51,27 +51,31 @@
   Skin Cancer Malignant Probability:<span class="ml-1"style="font-weight: 600;">{{data.Prescriptions.malignant_probability}}</span><br>
   </div>
   <div class="float-right mt-5 mr-0">
-    <img src="./static/uploads/{{data.Prescriptions.image}}" width="200px" class="img-thumbnail mr-0">
+    <img src="./static/uploads/{{data.Prescriptions.image}}" style="max-width:15em;" class="img-thumbnail mr-0">
 </div>
 </div>
-<div class="row">
+{% if app_id %}<div class="row">
 <div class=" mt-5 ml-5" style="font-weight: 600; font-size:25px; line-height: 1.8;">
   Prescription:
 
   </div>
-<div class="col-md-11 mt-5 ml-5" style="font-weight: 400; font-size:; line-height: 1;">
-  <span style="font-weight: 600;"></span><br>
+<div class="col-md-11 ml-5" style="font-weight: 400; font-size:; line-height: 1;">
+  {% if data.Prescriptions.desc==None %}
+  No prescription yet.
+  {%else%}
+  {{data.Prescriptions.desc}}
+  {%endif%}<br>
 
   </div>
-  </div>
+  </div>{%endif%}
   <div class="row">
     <div class=" mt-5 ml-5" style="font-weight: 400; font-size:25px; line-height: 1.8;width:800px;">
-  Doctor's Name: <span class="ml-1"style="font-weight: 600;"></span>
+  {% if app_id %}Doctor's Name: <span class="ml-1"style="font-weight: 600;">{{data.UserTable.name}}</span>{%endif%}
 
   </div>
   <div class="float-right mt-5 mx-auto" style="font-weight: 600; font-size:15px; line-height: 1;">
     <br>
-  <span class="ml-1"style="font-weight: 600;">Prescription ID: </span>
+  <span class="ml-1"style="font-weight: 600;">Prescription ID: SCD00000143{{data.Prescriptions.id}} </span>
 
   </div>
 </div>
