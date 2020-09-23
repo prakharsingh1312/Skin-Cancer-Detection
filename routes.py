@@ -170,6 +170,8 @@ def book_appointment_page():
 		msg="Please select a doctor."
 		flash(msg,"info")
 		return render_template('book.html',title=title,page=page,user=user,doctors=doctors,details=details,department=department,qualification=qualification,hospital=hospital,doc=0,pres=request.args['pres_id'])
+	elif 'time' not in request.args:
+		return render_template('book.html',title=title,page=page,user=user,doctor=request.args['doctor_id'],doc=2,pres=request.args['pres_id'])
 	else:
 		book_appointment(request.args);
 		msg="Appointment Booked."
@@ -178,11 +180,19 @@ def book_appointment_page():
 @app.route("/report" , methods=['GET' , 'POST'])
 def report_page():
 	title="Report | Skin Cancer Detection"
-	user_data,data,area=get_report(request.args['pres_id'])
-	rendered=render_template('report.html',title=title,user_data=user_data,data=data,area=area,gender={'M':"Male",'F':"Female"})
+	app_id=0
+	if 'pres_id' in request.args:
+		user_data,data,area=get_report(request.args['pres_id'])
+	elif 'app_id' in request.args:
+		app_id=1
+		user_data,data,area=get_report(0,request.args['app_id'])
+	rendered=render_template('report.html',title=title,user_data=user_data,data=data,area=area,gender={'M':"Male",'F':"Female"},app_id=app_id)
 	return render_pdf(HTML(string=rendered))
 @app.route("/report2" , methods=['GET' , 'POST'])
 def report2_page():
 	title="Report | Skin Cancer Detection"
-	user_data,data,area=get_report(request.args['pres_id'])
-	return render_template('report.html',title=title,user_data=user_data,data=data,area=area,gender={'M':"Male",'F':"Female"})
+	if 'pres_id' in request.args:
+		user_data,data,area=get_report(request.args['pres_id'])
+	elif 'app_id' in request.args:
+		user_data,data,area=get_report(0,request.args['app_id'])
+	return render_template('report.html',title=title,user_data=user_data,data=data,area=area,gender={'M':"Male",'F':"Female"},app_id=1)

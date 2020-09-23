@@ -102,21 +102,20 @@
                             <i class="material-icons">calendar_today</i>
                           </span>
                         </div>
-                        <input type="text" placeholder="Date Of Birth..." name="dob" class="form-control" required />
+                        <input type="text" placeholder="Date Of Birth..." name="dob" class="form-control datetimepicker" required />
                       </div>
                     </div>
-					
+
                 <label for="exampleFormControlSelect1">Gender</label>
-                <div class="form-group">
-                  <select class="form-control selectpicker" data-style="btn btn-link" id="gender" name='gender' style="all:none;" required>
-                    <option value="M">Male</option>	
+
+                  <select class="form-control selectpicker" data-style="btn  btn-success" id="gender" name='gender' style="all:none;" required>
+                    <option value="M">Male</option>
                     <option value="F">Female</option>
                     <option value="O">Others</option>
                     <option value="N">I do not wish to specify</option>
-                    
                   </select>
-                </div>
-              
+
+
                     <div class="form-check">
                       <label class="form-check-label">
                         <input class="form-check-input" type="checkbox" value="" checked>
@@ -136,4 +135,22 @@
           </div>
         </div>
       </div>{% endblock %}
-      {% block scripts %}{% endblock %}
+      {% block scripts %}
+      <script type="text/javascript">
+        $('.datetimepicker').datetimepicker({
+            icons: {
+                time: "fa fa-clock-o",
+                date: "fa fa-calendar",
+                up: "fa fa-chevron-up",
+                down: "fa fa-chevron-down",
+                previous: 'fa fa-chevron-left',
+                next: 'fa fa-chevron-right',
+                today: 'fa fa-screenshot',
+                clear: 'fa fa-trash',
+                close: 'fa fa-remove'
+
+            },
+            format: 'Y/M/D'
+        });
+
+      </script>{% endblock %}
