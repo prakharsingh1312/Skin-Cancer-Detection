@@ -294,7 +294,10 @@ def book_appointment(p):
 	db.session.add(appoint)
 	db.session.commit()
 def show_appointments():
-	data=db.session.query(UserTable,Prescriptions,Appointments,DoctorDetails,Hospitals).filter(db.and_(Prescriptions.patient_id==session['user_id'],Appointments.doctor_id==UserTable.id,Appointments.prescription_id==Prescriptions.id,DoctorDetails.user_id==UserTable.id,Hospitals.id==DoctorDetails.hospital_id)).all()
+	if session['user_role']==3:
+		data=db.session.query(UserTable,Prescriptions,Appointments,DoctorDetails,Hospitals).filter(db.and_(Prescriptions.patient_id==session['user_id'],Appointments.doctor_id==UserTable.id,Appointments.prescription_id==Prescriptions.id,DoctorDetails.user_id==UserTable.id,Hospitals.id==DoctorDetails.hospital_id)).all()
+	elif session['user_role']==2:
+		data=db.session.query(UserTable,Prescriptions,Appointments).filter(db.and_(Appointments.doctor_id==session['user_id'],Appointments.prescription_id==Prescriptions.id,Prescriptions.patient_id==UserTable.id)).all()
 	return data
 def get_report(pres_id,app_id=0):
 	user_data=db.session.query(UserTable).filter(UserTable.id==session['user_id']).first()
@@ -302,5 +305,18 @@ def get_report(pres_id,app_id=0):
 		data=db.session.query(Prescriptions,CancerTypes).filter(db.and_(Prescriptions.id==pres_id,Prescriptions.type_prediction==CancerTypes.id)).first()
 	else:
 		data=db.session.query(Appointments,UserTable,Prescriptions,CancerTypes).filter(db.and_(Appointments.id==app_id,Prescriptions.id==Appointments.prescription_id,UserTable.id==Appointments.doctor_id,Prescriptions.type_prediction==CancerTypes.id)).first()
-		area={"NF":"Neck/Face","UA":"Upper Abdomen","LA":"Lower Abdomen","A":"Arms"}
-		return user_data,data,area
+	area={"NF":"Neck/Face","UA":"Upper Abdomen","LA":"Lower Abdomen","A":"Arms"}
+	return user_data,data,area
+def write_prescription(p,q):
+	if(db.session.query(Appointments).filter(db.and_(Appointments.id==p['app_id'], Appointments.doctor_id==session['user_id'])).count()):
+		data=db.session.query(Appointments).filter(db.and_(Appointments.id==p['app_id'], Appointments.doctor_id==session['user_id'])).first()
+		data.desc=q['pres_desc']
+		db.session.commit()
+		return 1
+	return 0
+def show_prescription(p):
+	data=db.session.query(Appointments,UserTable,Prescriptions,CancerTypes).filter(db.and_(Appointments.id==p['app_id'],Prescriptions.id==Appointments.prescription_id,UserTable.id==Appointments.doctor_id,Prescriptions.type_prediction==CancerTypes.id)).first()
+	user_id=data.Prescriptions.patient_id
+	user_data=db.session.query(UserTable).filter(UserTable.id==user_id).first()
+	area={"NF":"Neck/Face","UA":"Upper Abdomen","LA":"Lower Abdomen","A":"Arms"}
+	return user_data,data,area

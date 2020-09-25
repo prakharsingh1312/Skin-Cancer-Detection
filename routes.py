@@ -151,6 +151,31 @@ def appointments_page():
 		user=session['user_name']
 	data=show_appointments()
 	return render_template('appointments.html',title=title,page=page,user=user,data=data)
+
+@app.route("/prescribe" , methods=['GET' , 'POST'])
+def prescribe_page():
+	if session['user_role']!=3:
+		return redirect(url_for(dashboard_page))
+	title="Prescription | Skin Cancer Detection"
+	page="Prescription"
+	user="Not Logged In"
+	if 'user_id' not in session:
+		return redirect(url_for('dashboard_page'))
+	else:
+		user=session['user_name']
+	if 'pres_desc' in request.form:
+		print(request.form['pres_desc'])
+		data=write_prescription(request.args,request.form)
+		if data:
+			msg="Prescription updated."
+			flash(msg,"success")
+		else:
+			msg="Error Updating."
+			flash(msg,"success")
+	user_data,data,area=show_prescription(request.args)
+	return render_template('prescribe.html',title=title,page=page,user=user,data=data,user_data=user_data,area=area,gender={'M':"Male",'F':"Female"})
+
+
 @app.route("/book_appointment" , methods=['GET' , 'POST'])
 def book_appointment_page():
 	title="Appointment | Skin Cancer Detection"
@@ -177,6 +202,7 @@ def book_appointment_page():
 		msg="Appointment Booked."
 		flash(msg,"success")
 		return redirect(url_for('appointments_page'))
+
 @app.route("/report" , methods=['GET' , 'POST'])
 def report_page():
 	title="Report | Skin Cancer Detection"
@@ -188,6 +214,7 @@ def report_page():
 		user_data,data,area=get_report(0,request.args['app_id'])
 	rendered=render_template('report.html',title=title,user_data=user_data,data=data,area=area,gender={'M':"Male",'F':"Female"},app_id=app_id)
 	return render_pdf(HTML(string=rendered))
+
 @app.route("/report2" , methods=['GET' , 'POST'])
 def report2_page():
 	title="Report | Skin Cancer Detection"
