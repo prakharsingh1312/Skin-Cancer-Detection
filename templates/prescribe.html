@@ -1,0 +1,62 @@
+{% extends 'base.html' %}{%block content%}
+<div class="row" style=" font-family: 'Montserrat', sans-serif;" >
+<!-- <img src="../static/img/header.png" > -->
+
+<div class="col-md-8  ml-5 mt-5" style="font-weight: 400; font-size:20px; line-height: 1.4;">
+Name:<span class="ml-1"style="font-weight: 600;">{{user_data.name}}</span><br>
+DOB:<span class="ml-1"style="font-weight: 600;">{{user_data.dob}}</span><br>
+Gender:<span class="ml-1"style="font-weight: 600;">{{gender[user_data.gender]}}</span><br>
+Location:<span class="ml-1"style="font-weight: 600;"></span><br>
+</div>
+<div class=" col-md-3  ">
+  <img src="./static/img/{{user_data.image}}" style="max-width:10em;" class="img-thumbnail mr-0">
+</div>
+</div>
+<div class="row" style=" font-family: 'Montserrat', sans-serif;" >
+<div class="col-md-8 ml-5 mt-5" style="font-weight: 400; font-size:20px; line-height: 1.8;">
+Affected Area:<span class="ml-1"style="font-weight: 600;">{{area[data.Prescriptions.affected_area]}}</span><br>
+Skin Cancer Status:<span class="ml-1"style="font-weight: 600;">{{data.Prescriptions.cancer}}</span><br>
+Prediction Probability:<span class="ml-1"style="font-weight: 600;">{{data.Prescriptions.cancer_probability}}</span><br>
+Skin Cancer Type Diagnosed:<span class="ml-1"style="font-weight: 600;">{{data.CancerTypes.type}}</span><br>
+Skin Cancer Malignant Probability:<span class="ml-1"style="font-weight: 600;">{{data.Prescriptions.malignant_probability}}</span><br>
+</div>
+<div class="col-md-3  mt-5 ">
+  <img src="./static/uploads/{{data.Prescriptions.image}}" style="max-width:15em;" class="img-thumbnail mr-0">
+</div>
+</div>
+<div class="row" style=" font-family: 'Montserrat', sans-serif;" >
+
+<div class="col-md-11 mt-5 ml-5" style="font-weight: 600; font-size:25px; line-height: 1.8;">
+Prescription:
+
+</div>
+<div class="col-md-11 ml-5" style="font-weight: 400; font-size:; line-height: 1;">
+<form  method="POST">
+
+
+<div class="form-group">
+   <textarea class="form-control" id="exampleFormControlTextarea1" name="pres_desc" rows="6">{{data.Appointments.desc}}</textarea>
+ </div>
+<br>
+ <input type="submit" class="btn btn-sm  btn-success" name="Update" value="UPDATE"><br>
+</form>
+</div>
+
+
+<div class="col-md-7 mt-5 ml-5" style="font-weight: 400; font-size:20px; line-height: 1.8;">
+Doctor's Name: <span class="ml-1"style="font-weight: 600;">{{data.UserTable.name}}</span>
+
+</div>
+<div class="col-md-4 float-right mt-5" style="font-weight: 600; font-size:12px; line-height: 1;">
+  <br>
+<span class="ml-1"style="font-weight: 600;">Prescription ID: SCD00000143{{data.Prescriptions.id}} </span>
+
+</div>
+
+<!-- <img class="mb-0"src="./static/img/footer.png" > -->
+
+
+</div>
+{% endblock %}
+{% block scripts %}
+{% endblock %}

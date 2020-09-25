@@ -39,7 +39,7 @@
   Location:<span class="ml-1"style="font-weight: 600;"></span><br>
   </div>
   <div class="float-right mr-0">
-    <img src="./static/img/user.jpg" style="max-width:15em;" class="img-thumbnail mr-0">
+    <img src="./static/img/{{user_data.image}}" style="max-width:15em;" class="img-thumbnail mr-0">
 </div>
 </div>
 <div class="row">
@@ -60,10 +60,10 @@
 
   </div>
 <div class="col-md-11 ml-5" style="font-weight: 400; font-size:; line-height: 1;">
-  {% if data.Prescriptions.desc==None %}
+  {% if data.Appointments.desc==None %}
   No prescription yet.
   {%else%}
-  {{data.Prescriptions.desc}}
+  {{data.Appointments.desc}}
   {%endif%}<br>
 
   </div>

@@ -1,4 +1,5 @@
 {% extends 'base.html' %}{%block content%}
+{% if session['user_role']==3 %}
 <div class="row">
   <div class="col-md-12 mr-auto">
                <div class="card">
@@ -59,6 +60,69 @@
                </div>
              </div>
   </div>
+  {% else %}
+  <div class="row">
+    <div class="col-md-12 mr-auto">
+                 <div class="card">
+                   <div class="card-header card-header-success">
+                     <h4 class="card-title ">Upcoming Appointments</h4>
+                     <p class="card-category"> Details of your upcoming appointments.</p>
+                   </div>
+                   <div class="card-body overflow-auto">
+                     <div class="table-responsive">
+                       <table class="table table-hover text-center">
+                         <thead class=" text-success">
+                           <th>
+                             S.No
+                           </th>
+                           <th>
+                             Patient
+                           </th>
+                           <th>
+                             DOB/Sex
+                           </th>
+                           <th>
+                             Report
+                           </th>
+                           <th>
+                             Date & Meeting Link
+                           </th>
+                         </thead>
+                         <tbody >
+  {% for a in data  %}
+
+                           <tr>
+                             <td>
+                              {{loop.index}}
+                             </td>
+                             <td>
+                                <img class="img img-thumbnail" style="width:7em;" src="./static/img/{{a.UserTable.image}}"><br>
+                               {{a.UserTable.name}}
+                             </td>
+                             <td>
+                               {{a.UserTable.dob}}/{{a.UserTable.gender}}
+                             </td>
+                             <td>
+                               <img class="img img-thumbnail" style="width:7em;" src="./static/uploads/{{a.Prescriptions.image}}"><br>
+                               <a href="./prescribe?app_id={{a.Appointments.id}}" target="_blank" class="btn btn-sm  btn-success" name="Show Report">Show Report</a>
+                             </td>
+                             <td >
+                                {{a.Appointments.time}}<br>
+                               <a href="{{a.Appointments.link_to}}" class="btn btn-sm  btn-success" name="Meeting Link">Meeting Link</a><br>
+                               <a href="./close_appointment" class="text-success small" name="Prescribe">Close Appointment</a>
+
+
+                             </td>
+                          </tr>
+                          {% endfor %}
+                         </tbody>
+                       </table>
+                     </div>
+                   </div>
+                 </div>
+               </div>
+    </div>
+    {% endif %}
 {% endblock %}
 {% block scripts %}
 
