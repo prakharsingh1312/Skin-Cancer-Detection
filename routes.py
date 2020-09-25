@@ -154,8 +154,8 @@ def appointments_page():
 
 @app.route("/prescribe" , methods=['GET' , 'POST'])
 def prescribe_page():
-	if session['user_role']!=3:
-		return redirect(url_for(dashboard_page))
+	if session['user_role']!=2:
+		return redirect(url_for('dashboard_page'))
 	title="Prescription | Skin Cancer Detection"
 	page="Prescription"
 	user="Not Logged In"
