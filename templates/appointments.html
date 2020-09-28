@@ -29,7 +29,7 @@
                        </thead>
                        <tbody >
 {% for a in data  %}
-
+{% if a.Appointments.status %}
                          <tr>
                            <td>
                             {{loop.index}}
@@ -43,7 +43,7 @@
                            </td>
                            <td>
                              <img class="img img-thumbnail" style="width:7em;" src="./static/uploads/{{a.Prescriptions.image}}"><br>
-                             <a href="" class="btn btn-sm  btn-success" name="Show Report">Show Report</a>
+                             <a href="./report?app_id={{a.Appointments.id}}" target="_blank"class="btn btn-sm  btn-success" name="Show Report">Show Report</a>
                            </td>
                            <td >
                               {{a.Appointments.time}}<br>
@@ -52,6 +52,7 @@
 
                            </td>
                         </tr>
+                        {% endif %}
                         {% endfor %}
                        </tbody>
                      </table>
@@ -60,6 +61,67 @@
                </div>
              </div>
   </div>
+  <div class="row">
+    <div class="col-md-12 mr-auto">
+                 <div class="card">
+                   <div class="card-header card-header-success">
+                     <h4 class="card-title ">Past Appointments</h4>
+                     <p class="card-category"> Details of your past appointments.</p>
+                   </div>
+                   <div class="card-body overflow-auto">
+                     <div class="table-responsive">
+                       <table class="table table-hover text-center">
+                         <thead class=" text-success">
+                           <th>
+                             S.No
+                           </th>
+                           <th>
+                             Doctor
+                           </th>
+                           <th>
+                             Hospital
+                           </th>
+                           <th>
+                             Report
+                           </th>
+                           <th>
+                             Date & Meeting Link
+                           </th>
+                         </thead>
+                         <tbody >
+  {% for a in data  %}
+{% if not a.Appointments.status %}
+                           <tr>
+                             <td>
+                              {{loop.index}}
+                             </td>
+                             <td>
+                                <img class="img img-thumbnail" style="width:7em;" src="./static/img/{{a.UserTable.name}}.jpg"><br>
+                               {{a.UserTable.name}}
+                             </td>
+                             <td>
+                               {{a.Hospitals.name}}
+                             </td>
+                             <td>
+                               <img class="img img-thumbnail" style="width:7em;" src="./static/uploads/{{a.Prescriptions.image}}"><br>
+                               <a href="./report?app_id={{a.Appointments.id}}" target="_blank"class="btn btn-sm  btn-success" name="Show Report">Show Report</a>
+                             </td>
+                             <td >
+                                {{a.Appointments.time}}<br>
+                               <a href="{{a.Appointments.link_to}}" class="btn btn-sm  btn-success" name="Meeting Link">Meeting Link</a><br>
+
+
+                             </td>
+                          </tr>
+                        {% endif %}
+                          {% endfor %}
+                         </tbody>
+                       </table>
+                     </div>
+                   </div>
+                 </div>
+               </div>
+    </div>
   {% else %}
   <div class="row">
     <div class="col-md-12 mr-auto">
@@ -90,7 +152,7 @@
                          </thead>
                          <tbody >
   {% for a in data  %}
-
+  {% if a.Appointments.status==1 %}
                            <tr>
                              <td>
                               {{loop.index}}
@@ -109,11 +171,12 @@
                              <td >
                                 {{a.Appointments.time}}<br>
                                <a href="{{a.Appointments.link_to}}" class="btn btn-sm  btn-success" name="Meeting Link">Meeting Link</a><br>
-                               <a href="./close_appointment" class="text-success small" name="Prescribe">Close Appointment</a>
+                               <a href="./appointments?app_id={{a.Appointments.id}}&close_appointment" class="text-success small" name="Prescribe">Close Appointment</a>
 
 
                              </td>
                           </tr>
+                          {% endif %}
                           {% endfor %}
                          </tbody>
                        </table>
@@ -122,6 +185,68 @@
                  </div>
                </div>
     </div>
+    <div class="row">
+      <div class="col-md-12 mr-auto">
+                   <div class="card">
+                     <div class="card-header card-header-success">
+                       <h4 class="card-title ">Past Appointments</h4>
+                       <p class="card-category"> Details of your past appointments.</p>
+                     </div>
+                     <div class="card-body overflow-auto">
+                       <div class="table-responsive">
+                         <table class="table table-hover text-center">
+                           <thead class=" text-success">
+                             <th>
+                               S.No
+                             </th>
+                             <th>
+                               Patient
+                             </th>
+                             <th>
+                               DOB/Sex
+                             </th>
+                             <th>
+                               Report
+                             </th>
+                             <th>
+                               Date
+                             </th>
+                           </thead>
+                           <tbody >
+    {% for a in data  %}
+    {% if a.Appointments.status==0 %}
+                             <tr>
+                               <td>
+                                {{loop.index}}
+                               </td>
+                               <td>
+                                  <img class="img img-thumbnail" style="width:7em;" src="./static/img/{{a.UserTable.image}}"><br>
+                                 {{a.UserTable.name}}
+                               </td>
+                               <td>
+                                 {{a.UserTable.dob}}/{{a.UserTable.gender}}
+                               </td>
+                               <td>
+                                 <img class="img img-thumbnail" style="width:7em;" src="./static/uploads/{{a.Prescriptions.image}}"><br>
+                                 <a href="./prescribe?app_id={{a.Appointments.id}}"  class="btn btn-sm  btn-success" name="Show Report">Show Report</a>
+                               </td>
+                               <td >
+                                  {{a.Appointments.time}}<br>
+                                 <!-- <a href="{{a.Appointments.link_to}}" class="btn btn-sm  btn-success" name="Meeting Link">Meeting Link</a><br> -->
+                                 <!-- <a href="./appointments?app_id={{a.Appointments.id}}&close_appointment" class="text-success small" name="Prescribe">Close Appointment</a> -->
+
+
+                               </td>
+                            </tr>
+                            {% endif %}
+                            {% endfor %}
+                           </tbody>
+                         </table>
+                       </div>
+                     </div>
+                   </div>
+                 </div>
+      </div>
     {% endif %}
 {% endblock %}
 {% block scripts %}

@@ -91,6 +91,7 @@ def logout_page():
 def pathology_page():
 	title="Pathology | Skin Cancer Detection"
 	page="Pathology"
+	notifications_count,notifications=show_notifications()
 	if 'user_id' not in session:
 		redirect(url_for('login_page'))
 	else:
@@ -125,19 +126,20 @@ def pathology_page():
 			res2=predict_malig_type(request.form['path'])
 			return "<div ><img src='./static/uploads/output/"+res2['path']+"' class='w-50 rounded mx-auto d-block' alt='...'></div>Prelimnary tests reveal that the type of skin cancer identified is <b class='text-uppercase'>"+res2['type']+"</b> and the chances of it being malignant are <b>"+res2['probability']+"%</b>."
 	reports,area=show_history()
-	return render_template('pathology.html',page=page,title=title,user=user,reports=reports,area=area)
+	return render_template('pathology.html',page=page,title=title,user=user,reports=reports,area=area,notifications_count=notifications_count,notifications=notifications)
 
 @app.route("/doctors" , methods=['GET' , 'POST'])
 def doctors_page():
 	title="Doctors | Skin Cancer Detection"
 	page="Doctors"
 	user="Not Logged In"
+	notifications_count,notifications=show_notifications()
 	if 'user_id' not in session:
 		return redirect(url_for('dashboard_page'))
 	else:
 		user=session['user_name']
 	doctors,details,department,qualification,hospital=show_doctors()
-	return render_template('doctors.html',title=title,page=page,user=user,doctors=doctors,details=details,department=department,qualification=qualification,hospital=hospital)
+	return render_template('doctors.html',title=title,page=page,user=user,doctors=doctors,details=details,department=department,qualification=qualification,hospital=hospital,notifications_count=notifications_count,notifications=notifications)
 
 
 @app.route("/appointments" , methods=['GET' , 'POST'])
@@ -145,12 +147,20 @@ def appointments_page():
 	title="Appointments | Skin Cancer Detection"
 	page="Appointments"
 	user="Not Logged In"
+	notifications_count,notifications=show_notifications()
 	if 'user_id' not in session:
 		return redirect(url_for('dashboard_page'))
 	else:
 		user=session['user_name']
+	if 'close_appointment' in request.args:
+		if close_appointment(request.args):
+			msg="Appointment Closed."
+			flash(msg,"success")
+		else:
+			msg="Error."
+			flash(msg,"danger")
 	data=show_appointments()
-	return render_template('appointments.html',title=title,page=page,user=user,data=data)
+	return render_template('appointments.html',title=title,page=page,user=user,data=data,notifications_count=notifications_count,notifications=notifications)
 
 @app.route("/prescribe" , methods=['GET' , 'POST'])
 def prescribe_page():
@@ -159,6 +169,7 @@ def prescribe_page():
 	title="Prescription | Skin Cancer Detection"
 	page="Prescription"
 	user="Not Logged In"
+	notifications_count,notifications=show_notifications()
 	if 'user_id' not in session:
 		return redirect(url_for('dashboard_page'))
 	else:
@@ -173,7 +184,7 @@ def prescribe_page():
 			msg="Error Updating."
 			flash(msg,"success")
 	user_data,data,area=show_prescription(request.args)
-	return render_template('prescribe.html',title=title,page=page,user=user,data=data,user_data=user_data,area=area,gender={'M':"Male",'F':"Female"})
+	return render_template('prescribe.html',title=title,page=page,user=user,data=data,user_data=user_data,area=area,gender={'M':"Male",'F':"Female"},notifications_count=notifications_count,notifications=notifications)
 
 
 @app.route("/book_appointment" , methods=['GET' , 'POST'])
@@ -181,6 +192,7 @@ def book_appointment_page():
 	title="Appointment | Skin Cancer Detection"
 	page="Appointment"
 	user="Not Logged In"
+	notifications_count,notifications=show_notifications()
 	if 'user_id' not in session:
 		return redirect(url_for('dashboard_page'))
 	else:
@@ -189,14 +201,14 @@ def book_appointment_page():
 		reports,area=show_history()
 		msg="Please select a prescription."
 		flash(msg,"info")
-		return render_template('book.html',title=title,page=page,user=user,doc=1,reports=reports,area=area,doctor=request.args['doctor_id'])
+		return render_template('book.html',title=title,page=page,user=user,doc=1,reports=reports,area=area,doctor=request.args['doctor_id'],notifications_count=notifications_count,notifications=notifications)
 	elif('doctor_id' not in request.args):
 		doctors,details,department,qualification,hospital=show_doctors()
 		msg="Please select a doctor."
 		flash(msg,"info")
-		return render_template('book.html',title=title,page=page,user=user,doctors=doctors,details=details,department=department,qualification=qualification,hospital=hospital,doc=0,pres=request.args['pres_id'])
+		return render_template('book.html',title=title,page=page,user=user,doctors=doctors,details=details,department=department,qualification=qualification,hospital=hospital,doc=0,pres=request.args['pres_id'],notifications_count=notifications_count,notifications=notifications)
 	elif 'time' not in request.args:
-		return render_template('book.html',title=title,page=page,user=user,doctor=request.args['doctor_id'],doc=2,pres=request.args['pres_id'])
+		return render_template('book.html',title=title,page=page,user=user,doctor=request.args['doctor_id'],doc=2,pres=request.args['pres_id'],notifications_count=notifications_count,notifications=notifications)
 	else:
 		book_appointment(request.args);
 		msg="Appointment Booked."
@@ -223,3 +235,49 @@ def report2_page():
 	elif 'app_id' in request.args:
 		user_data,data,area=get_report(0,request.args['app_id'])
 	return render_template('report.html',title=title,user_data=user_data,data=data,area=area,gender={'M':"Male",'F':"Female"},app_id=1)
+
+@app.route("/user" , methods=['GET' , 'POST'])
+def user_page():
+	title="User Profile | Skin Cancer Detection"
+	page="User Profile"
+	user="Not Logged In"
+	notifications_count,notifications=show_notifications()
+	if 'user_id' not in session:
+		return redirect(url_for('dashboard_page'))
+	else:
+		user=session['user_name']
+	return render_template('user.html', title=title, user=user , page=page,notifications_count=notifications_count,notifications=notifications)
+
+@app.route("/blog" , methods=['GET' , 'POST'])
+def blog_page():
+	title="Blog | Skin Cancer Detection"
+	page="Blog"
+	user="Not Logged In"
+	notifications_count,notifications=show_notifications()
+	d=-1
+	if 'user_id' not in session:
+		return redirect(url_for('dashboard_page'))
+	else:
+		user=session['user_name']
+	if 'post' in request.args:
+		d=create_post(request.form,0)
+	elif 'link' in request.args:
+		d=create_post(request.form,1)
+	elif 'image' in request.args:
+		image=upload_file(request.files['image'])
+		d=create_post(request.form,2,image)
+	if d==1:
+		msg="Post Created."
+		flash(msg,"success")
+	elif d==0:
+		msg="Error in post creation."
+		flash(msg,"danger")
+
+	data=show_blogs()
+	return render_template('blog.html', title=title, user=user , page=page,notifications_count=notifications_count,notifications=notifications,data=data)
+
+@app.route("/show_blog" , methods=['GET' , 'POST'])
+def show_post_page():
+	if 'id' in request.args:
+		data,comment=show_post(request.args['id'])
+		return render_template('post.html',data=data,comment=comment)

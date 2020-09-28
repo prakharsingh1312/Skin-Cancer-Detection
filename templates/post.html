@@ -1,0 +1,41 @@
+
+      <div class="card card-nav-tabs text-center">
+        <!-- <div class="card-header card-header-primary">
+          {{data.Blog.title}}
+        </div> -->
+        {% if data.Blog.image!=None %}<img class="card-img-top" src="./static/uploads/{{data.Blog.image}}" rel="nofollow" alt="Card image cap">{% endif %}
+        <div class="card-body">
+          <h4 class="card-title text-success font-weight-normal">{% if data.Blog.link==None %}{{data.Blog.title}}{% else %}<a href="{{data.Blog.link}}" class="text-success" target="_blank">{{data.Blog.title}}</a> {%endif%}</h4>
+          <p class="card-text">{{data.Blog.desc}}</p>
+      <!-- <a href="" class="btn btn-success btn-sm open_blog" id="open_blog:{{data.Blog.id}}" data-toggle="modal" data-target="#exampleModalLong">Read More</a> &#xB7; -->
+      {% if data.Blog.link!=None %}
+      <a href="{{data.Blog.link}}" class="btn btn-info btn-sm" target="_blank">Visit Link</a> &#xB7;
+      {% endif %}
+        </div>
+        <div class="card-stats pr-3 pl-3  ">
+                  <div class="author ml-0">
+                      <a href="#pablo">
+                         <img src="/static/img/{% if data.UserTable.user_role==3 %}{{data.UserTable.image}}{% else %}{{data.UserTable.name}}.jpg{% endif %}" rel="nofollow" alt="..." class="avatar img-raised">
+                         <span>{{data.UserTable.name}}</span>
+                      </a>
+                  </div>
+
+
+
+                 <div class="stats ml-auto">
+
+                      <i class="material-icons">arrow_upward</i> {% if data.Upvotes==None %}0{% else %}{{data.Upvotes}}{% endif %} &#xB7;
+                      <i class="material-icons">arrow_downward</i> {% if data.Downvotes==None %}0{% else %}{{data.Downvotes}}{% endif %}
+                  </div>
+              </div>
+        <div class="card-footer mt-3 text-muted">
+          {% if data.timediff.days>=1 %}{{data.timediff.days}} days
+          {% elif data.timediff.seconds>=3600  %}{{(data.timediff.seconds/3600)|int}} hours
+          {% elif data.timediff.seconds>=60 %}{{(data.timediff.seconds/60)|int}} minutes
+          {% else %}{{data.timediff.seconds}} seconds
+          {% endif %}
+          ago
+
+
+        </div>
+      </div>

@@ -1,0 +1,153 @@
+{% extends 'base.html' %}{%block content%}
+<div class="card text-center">
+  <div class="card-header card-header-success">
+    <ul class="nav nav-tabs" >
+      <li class="nav-item ">
+        <a class="nav-link active post_link" href="#0">Post</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link link_link" href="#0">Link</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link image_link" href="#0">Image</a>
+      </li>
+    </ul>
+  </div>
+  <div class="card-body">
+    <h4 class="card-title">Create Post</h4>
+    <div id="replace">
+    <form method="POST" action="./blog?post" class="text-left">
+      <div class="form-group">
+        <label  class="bmd-label-floating" for="exampleFormControlInput1">Title</label>
+        <input type="text" class="form-control" id="exampleFormControlInput1" name="title" placeholder="">
+      </div>
+      <div class="form-group">
+        <label  class="bmd-label-floating" for="exampleFormControlTextarea1">Content</label>
+        <textarea class="form-control" id="exampleFormControlTextarea1" name="desc" rows="6"></textarea>
+      </div>
+
+    <div class="text-right">
+    <button type=submit class=" btn btn-success btn-sm">Create Post</button>
+    </div>
+    </form>
+
+    </div>
+  </div>
+</div>
+<hr class="dashed">
+<div class="h3 text-center">All Posts</div>
+<div class="row">
+
+{% for a in data %}
+<div class="col-md-6">
+<div class="card card-nav-tabs text-center">
+  <!-- <div class="card-header card-header-primary">
+    {{a.Blog.title}}
+  </div> -->
+  {% if a.Blog.image!=None %}<img class="card-img-top" src="./static/uploads/{{a.Blog.image}}" rel="nofollow" alt="Card image cap">{% endif %}
+  <div class="card-body">
+    <h4 class="card-title text-success font-weight-normal">{% if a.Blog.link==None %}{{a.Blog.title}}{% else %}<a href="{{a.Blog.link}}" class="text-success" target="_blank">{{a.Blog.title}}</a> {%endif%}</h4>
+    <p class="card-text">{{a.Blog.desc|truncate}}</p>
+<a href="" class="btn btn-success btn-sm open_blog" id="open_blog:{{a.Blog.id}}" data-toggle="modal" data-target="#exampleModalLong">Read More</a> &#xB7;
+{% if a.Blog.link!=None %}
+<a href="{{a.Blog.link}}" class="btn btn-info btn-sm" target="_blank">Visit Link</a> &#xB7;
+{% endif %}
+  </div>
+  <div class="card-stats pr-3 pl-3  ">
+            <div class="author ml-0">
+                <a href="#pablo">
+                   <img src="/static/img/{% if a.UserTable.user_role==3 %}{{a.UserTable.image}}{% else %}{{a.UserTable.name}}.jpg{% endif %}" rel="nofollow" alt="..." class="avatar img-raised">
+                   <span>{{a.UserTable.name}}</span>
+                </a>
+            </div>
+
+
+
+           <div class="stats ml-auto">
+
+                <i class="material-icons">arrow_upward</i> {% if a.Upvotes==None %}0{% else %}{{a.Upvotes}}{% endif %} &#xB7;
+                <i class="material-icons">arrow_downward</i> {% if a.Downvotes==None %}0{% else %}{{a.Downvotes}}{% endif %}
+            </div>
+        </div>
+  <div class="card-footer mt-3 text-muted">
+    {% if a.timediff.days>=1 %}{{a.timediff.days}} days
+    {% elif a.timediff.seconds>=3600  %}{{(a.timediff.seconds/3600)|int}} hours
+    {% elif a.timediff.seconds>=60 %}{{(a.timediff.seconds/60)|int}} minutes
+    {% else %}{{a.timediff.seconds}} seconds
+    {% endif %}
+    ago
+
+
+  </div>
+</div>
+</div>
+{% endfor %}
+</div>
+
+<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content ">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle"></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="blog_content">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+  $(document).on('click','.open_blog',function(){
+    var array=this.id.split(':');
+    open_blog(array[1]);
+  });
+  $(document).on('change','.form-control-file',function(e){
+    $('#file1').html("Image:"+e.target.files[0].name);
+  });
+  $(document).on('click','#fileButton',function(){
+    $('#file1').click();
+  });
+  $(document).on('click','.post_link',function(){
+    show_post();
+  });
+  $(document).on('click','.link_link',function(){
+    show_link();
+  });
+  $(document).on('click','.image_link',function(){
+    show_image();
+  });
+
+  function show_post(){
+    $('#replace').html('<form method="POST" action="./blog?post" class="text-left">      <div class="form-group">        <label  class="bmd-label-floating" for="exampleFormControlInput1">Title</label>        <input type="text" class="form-control" id="exampleFormControlInput1" name="title" placeholder="">      </div>      <div class="form-group">        <label  class="bmd-label-floating" for="exampleFormControlTextarea1">Content</label>        <textarea class="form-control" id="exampleFormControlTextarea1" name="desc" rows="6"></textarea>      </div>    <div class="text-right">    <button type=submit class=" btn btn-success btn-sm">Create Post</button>    </div>    </form>');
+    $('.post_link').addClass('active','active');
+    $('.link_link').removeClass('active');
+    $('.image_link').removeClass('active');
+  }
+  function show_link(){
+    $('#replace').html('<form method="POST" action="./blog?link" class="text-left">      <div class="form-group">        <label class="bmd-label-floating"for="exampleFormControlInput1">Title</label>        <input type="text" class="form-control" id="exampleFormControlInput1" name="title" placeholder="">      </div>      <div class="form-group">        <label  class="bmd-label-floating" for="exampleFormControlInput1">Link</label>        <input type="text" class="form-control" id="exampleFormControlInput1" name="link" placeholder="">      </div>      <div class="form-group">        <label class="bmd-label-floating" for="exampleFormControlTextarea1">Content</label>        <textarea class="form-control" id="exampleFormControlTextarea1" name="desc" rows="6"></textarea>      </div>    <div class="text-right">    <button type=submit class=" btn btn-success btn-sm">Create Post</button>    </div>    </form>    </div>  </div></div>');
+    $('.post_link').removeClass('active');
+    $('.link_link').addClass('active','active');
+    $('.image_link').removeClass('active');
+  }
+  function show_image(){
+    $('#replace').html('  <form method="POST" enctype="multipart/form-data" action="./blog?image" class="text-left">        <div class="form-group">          <label class="bmd-label-floating"for="exampleFormControlInput1">Title</label>          <input type="text" class="form-control" id="exampleFormControlInput1" name="title" placeholder="">        </div>        <div class="form-group">        <label class="bmd-label-floating" for="exampleFormControlFile1" id="file1">Image</label>        <input type="file" class="form-control-file" id="exampleFormControlFile1" name="image" id="file-input">        <span class="input-group-btn">          <button type="button" style="margin-left:10px;" class="btn btn-fab btn-round btn-success" id="fileButton">              <i class="material-icons">attach_file</i>          </button><br>        </div>        <div class="form-group">          <label class="bmd-label-floating" for="exampleFormControlTextarea1">Content</label>          <textarea class="form-control" id="exampleFormControlTextarea1" name="desc" rows="6"></textarea>        </div>      <div class="text-right">      <button type=submit class=" btn btn-success btn-sm">Create Post</button>      </div>      </form>');
+    $('.post_link').removeClass('active');
+    $('.link_link').removeClass('active');
+    $('.image_link').addClass('active','active');
+  }
+  function open_blog(id){
+    $.get('./show_blog?id='+id,function(data){
+      $('#blog_content').html(data);
+    });
+  }
+</script>
+{% endblock %}
