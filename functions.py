@@ -50,6 +50,10 @@ class UserTable(db.Model):
 	details=db.relationship('DoctorDetails',backref='doctor')
 	notifications=db.relationship('Notifications',backref='user')
 	prescriptions=db.relationship('Prescriptions',backref='patient')
+	blogs=db.relationship('Blog',backref='blogs')
+	comments=db.relationship('Comment',backref='comments')
+	b_reactions=db.relationship('BlogReactions',backref='b_reactions')
+	c_reactions=db.relationship('CommentReactions',backref='c_reactions')
 	#locality=db.relationship('Locality',backref='user')
 
 class DoctorDetails(db.Model):
@@ -97,6 +101,7 @@ class Appointments(db.Model):
 	desc=db.Column('desc',db.String(100))
 	prescription_id=db.Column('patient_id',db.Integer,db.ForeignKey('prescriptions_table.id'))
 	doctor_id=db.Column('doctor_id',db.Integer,db.ForeignKey('doctor_details.id'))
+	status=db.Column('status',db.Integer,default=1)
 class Prescriptions(db.Model):
 	__tablename__='prescriptions_table'
 	id=db.Column('id', db.Integer, primary_key=True)
@@ -130,6 +135,37 @@ class Locality(db.Model):
 	id=db.Column('id', db.Integer, primary_key=True)
 	name=db.Column('name',db.String(1000))
 	user=db.relationship('UserTable',backref='locality')
+
+class Blog(db.Model):
+	__tablename__='blog_table'
+	id=db.Column('id', db.Integer, primary_key=True)
+	user_id=db.Column('user_id',db.Integer,db.ForeignKey('user_table.id'))
+	title=db.Column('title',db.String(1000))
+	desc=db.Column('desc',db.String(10000))
+	image=db.Column('image',db.String(1000))
+	link=db.Column('link',db.String(1000))
+
+class Comment(db.Model):
+	__tablename__='comment_table'
+	id=db.Column('id', db.Integer, primary_key=True)
+	user_id=db.Column('user_id',db.Integer,db.ForeignKey('user_table.id'))
+	blog_id=db.Column('blog_id',db.Integer,db.ForeignKey('blog_table.id'))
+	desc=db.Column('desc',db.String(10000))
+
+class BlogReactions(db.Model):
+	__tablename__='blog_reactions_table'
+	id=db.Column('id', db.Integer, primary_key=True)
+	user_id=db.Column('user_id',db.Integer,db.ForeignKey('user_table.id'))
+	blog_id=db.Column('blog_id',db.Integer,db.ForeignKey('blog_table.id'))
+	reaction_type=db.Column('reaction_type', db.Integer)
+
+class CommentReactions(db.Model):
+	__tablename__='comment_reactions_table'
+	id=db.Column('id', db.Integer, primary_key=True)
+	user_id=db.Column('user_id',db.Integer,db.ForeignKey('user_table.id'))
+	comment_id=db.Column('comment_id',db.Integer,db.ForeignKey('blog_table.id'))
+	reaction_type=db.Column('reaction_type', db.Integer)
+
 
 #db.drop_all()
 #db.create_all()
