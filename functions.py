@@ -92,6 +92,7 @@ class Notifications(db.Model):
 	desc=db.Column('desc',db.String(100))
 	link_to=db.Column('link_to',db.String(100))
 	time=db.Column('time',db.DateTime)
+	status=db.Column('status',db.Integer,default=1)
 
 class Appointments(db.Model):
 	__tablename__='appointments_table'
@@ -144,6 +145,7 @@ class Blog(db.Model):
 	desc=db.Column('desc',db.String(10000))
 	image=db.Column('image',db.String(1000))
 	link=db.Column('link',db.String(1000))
+	time=db.Column('time',db.DateTime,default=datetime.datetime.utcnow)
 
 class Comment(db.Model):
 	__tablename__='comment_table'
@@ -151,6 +153,7 @@ class Comment(db.Model):
 	user_id=db.Column('user_id',db.Integer,db.ForeignKey('user_table.id'))
 	blog_id=db.Column('blog_id',db.Integer,db.ForeignKey('blog_table.id'))
 	desc=db.Column('desc',db.String(10000))
+	time=db.Column('time',db.DateTime,default=datetime.datetime.utcnow)
 
 class BlogReactions(db.Model):
 	__tablename__='blog_reactions_table'
@@ -158,6 +161,7 @@ class BlogReactions(db.Model):
 	user_id=db.Column('user_id',db.Integer,db.ForeignKey('user_table.id'))
 	blog_id=db.Column('blog_id',db.Integer,db.ForeignKey('blog_table.id'))
 	reaction_type=db.Column('reaction_type', db.Integer)
+
 
 class CommentReactions(db.Model):
 	__tablename__='comment_reactions_table'
@@ -331,9 +335,9 @@ def book_appointment(p):
 	db.session.commit()
 def show_appointments():
 	if session['user_role']==3:
-		data=db.session.query(UserTable,Prescriptions,Appointments,DoctorDetails,Hospitals).filter(db.and_(Prescriptions.patient_id==session['user_id'],Appointments.doctor_id==UserTable.id,Appointments.prescription_id==Prescriptions.id,DoctorDetails.user_id==UserTable.id,Hospitals.id==DoctorDetails.hospital_id)).all()
+		data=db.session.query(UserTable,Prescriptions,Appointments,DoctorDetails,Hospitals).filter(db.and_(Prescriptions.patient_id==session['user_id'],Appointments.doctor_id==UserTable.id,Appointments.prescription_id==Prescriptions.id,DoctorDetails.user_id==UserTable.id,Hospitals.id==DoctorDetails.hospital_id)).order_by(Appointments.time.desc()).all()
 	elif session['user_role']==2:
-		data=db.session.query(UserTable,Prescriptions,Appointments).filter(db.and_(Appointments.doctor_id==session['user_id'],Appointments.prescription_id==Prescriptions.id,Prescriptions.patient_id==UserTable.id)).all()
+		data=db.session.query(UserTable,Prescriptions,Appointments).filter(db.and_(Appointments.doctor_id==session['user_id'],Appointments.prescription_id==Prescriptions.id,Prescriptions.patient_id==UserTable.id)).order_by(Appointments.time.desc()).all()
 	return data
 def get_report(pres_id,app_id=0):
 	user_data=db.session.query(UserTable).filter(UserTable.id==session['user_id']).first()
@@ -356,3 +360,46 @@ def show_prescription(p):
 	user_data=db.session.query(UserTable).filter(UserTable.id==user_id).first()
 	area={"NF":"Neck/Face","UA":"Upper Abdomen","LA":"Lower Abdomen","A":"Arms"}
 	return user_data,data,area
+
+def close_appointment(p):
+	if(db.session.query(Appointments).filter(db.and_(Appointments.id == p['app_id'], Appointments.doctor_id==session['user_id'])).count()):
+		data=db.session.query(Appointments).filter(db.and_(Appointments.id == p['app_id'], Appointments.doctor_id==session['user_id'])).first()
+		data.status=0
+		db.session.commit()
+		return 1
+	return 0
+
+def show_notifications():
+	notifications_count=db.session.query(Notifications).filter(Notifications.status==1).order_by(Notifications.time.desc()).count()
+	notifications=db.session.query(Notifications).order_by(Notifications.time.desc(),Notifications.status.desc()).all()
+	return notifications_count,notifications
+
+def show_blogs():
+	upvotes_subq=(db.session.query(BlogReactions.blog_id,db.func.count(BlogReactions.id).label("Upvotes")).filter(BlogReactions.reaction_type==1).group_by(BlogReactions.blog_id)).subquery()
+	downvotes_subq=(db.session.query(BlogReactions.blog_id,db.func.count(BlogReactions.id).label("Downvotes")).filter(BlogReactions.reaction_type==2).group_by(BlogReactions.blog_id)).subquery()
+	data=db.session.query(Blog,db.func.timediff(db.func.utc_timestamp(),Blog.time).label("timediff"),UserTable,upvotes_subq.c.Upvotes,downvotes_subq.c.Downvotes).outerjoin(UserTable).outerjoin(upvotes_subq,upvotes_subq.c.blog_id==Blog.id).outerjoin(downvotes_subq,downvotes_subq.c.blog_id==Blog.id).all()
+
+	#members = [attr for attr in dir(data[0]) if not callable(getattr(data[0], attr)) and not attr.startswith("__")]
+	#print(members)
+	return data
+
+def create_post(p,type,image=""):
+	data=Blog(user_id=session['user_id'],title=p['title'],desc=p['desc'])
+	if type==1:
+		data.link=p['link']
+	elif type==2:
+		data.image=image
+	db.session.add(data)
+	db.session.commit()
+	return 1
+
+def show_post(id):
+	cupvotes_subq=(db.session.query(CommentReactions.comment_id,db.func.count(CommentReactions.id).label("CUpvotes")).filter(CommentReactions.reaction_type==1).group_by(CommentReactions.comment_id)).subquery()
+	cdownvotes_subq=(db.session.query(CommentReactions.comment_id,db.func.count(CommentReactions.id).label("CDownvotes")).filter(CommentReactions.reaction_type==2).group_by(CommentReactions.comment_id)).subquery()
+	comment=db.session.query(Comment,UserTable,cupvotes_subq.c.CUpvotes,cdownvotes_subq.c.CDownvotes).filter(Comment.blog_id==id).outerjoin(UserTable).outerjoin(cupvotes_subq,cupvotes_subq.c.comment_id==Comment.id).outerjoin(cdownvotes_subq,cdownvotes_subq.c.comment_id==Comment.id)
+	upvotes_subq=(db.session.query(BlogReactions.blog_id,db.func.count(BlogReactions.id).label("Upvotes")).filter(BlogReactions.reaction_type==1).group_by(BlogReactions.blog_id)).subquery()
+	downvotes_subq=(db.session.query(BlogReactions.blog_id,db.func.count(BlogReactions.id).label("Downvotes")).filter(BlogReactions.reaction_type==2).group_by(BlogReactions.blog_id)).subquery()
+	data=db.session.query(Blog,UserTable,db.func.timediff(db.func.utc_timestamp(),Blog.time).label("timediff"),upvotes_subq.c.Upvotes,downvotes_subq.c.Downvotes).filter(Blog.id==id).outerjoin(UserTable).outerjoin(upvotes_subq,upvotes_subq.c.blog_id==Blog.id).outerjoin(downvotes_subq,downvotes_subq.c.blog_id==Blog.id).first()
+	members = [attr for attr in dir(data[0]) if not callable(getattr(data[0], attr)) and not attr.startswith("__")]
+	print(members)
+	return data,comment

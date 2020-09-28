@@ -35,10 +35,10 @@ Prescription:
 
 
 <div class="form-group">
-   <textarea class="form-control" id="exampleFormControlTextarea1" name="pres_desc" rows="6">{{data.Appointments.desc}}</textarea>
+   <textarea class="form-control" id="exampleFormControlTextarea1" name="pres_desc" placeholder="Write prescription here." rows="6" {% if not data.Appointments.status %}disabled{% endif %}>{% if data.Appointments.desc!=None %}{{data.Appointments.desc}}{% endif %}</textarea>
  </div>
 <br>
- <input type="submit" class="btn btn-sm  btn-success" name="Update" value="UPDATE"><br>
+ {% if data.Appointments.status %}<input type="submit" class="btn btn-sm  btn-success" name="Update" value="UPDATE"><br>{% endif %}
 </form>
 </div>
 
