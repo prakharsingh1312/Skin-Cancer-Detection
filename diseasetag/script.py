@@ -3,8 +3,9 @@ from nltk.stem.lancaster import LancasterStemmer
 stemmer=LancasterStemmer()
 import pickle
 import numpy
-import tflearn
-import tensorflow
+import tensorflow as tf
+from tensorflow import keras
+from tensorflow.keras import layers
 import random
 import json
 import pyttsx3
@@ -67,33 +68,19 @@ except:
 	with open('data.pickle','wb') as f:
 		pickle.dump((words,labels,training,output),f)
 
-
-
-
-
-
 try:
-	
-	tensorflow.reset_default_graph()
-	net=tflearn.input_data(shape=[None,len(training[0])])
-	net=tflearn.fully_connected(net,8)
-	net=tflearn.fully_connected(net,8)
-	net=tflearn.fully_connected(net,8)
-	net=tflearn.fully_connected(net,len(output[0]),activation='softmax')
-	net=tflearn.regression(net)
-	model=tflearn.DNN(net,tensorboard_dir='log')
-	model.load('chat.tflearn')
+	model=keras.models.load_model('model_saved.h5')
+
 except:
-	tensorflow.reset_default_graph()
-	net=tflearn.input_data(shape=[None,len(training[0])])
-	net=tflearn.fully_connected(net,8)
-	net=tflearn.fully_connected(net,8)
-	net=tflearn.fully_connected(net,8)
-	net=tflearn.fully_connected(net,len(output[0]),activation='softmax')
-	net=tflearn.regression(net)
-	model=tflearn.DNN(net,tensorboard_dir='log')
-	model.fit(training,output,n_epoch=200,batch_size=8,show_metric=True)
-	model.save('chat.tflearn')
+	model = tf.keras.models.Sequential()
+	model.add(tf.keras.Input(shape=len(training[0])))
+	model.add(tf.keras.layers.Dense(8))
+	model.add(tf.keras.layers.Dense(8))
+	model.add(tf.keras.layers.Dense(8))
+	model.add(tf.keras.layers.Dense(len(output[0])))
+	model.compile(loss='mean_squared_error',optimizer='adam',metrics=['accuracy'])
+	model.fit(training,output,epochs=100,verbose=1)
+	model.save('model_saved.h5')
 
 def bag_of_words(s,words):
 	bag=[0 for _ in range(len(words))]
@@ -104,7 +91,7 @@ def bag_of_words(s,words):
 		for i,w in enumerate(words):
 			if w==x:
 				bag[i]=1
-	return numpy.array(bag)
+	return numpy.array(bag).reshape(-1,len(bag))
 
 def chat():
 	i=0
@@ -114,7 +101,7 @@ def chat():
 	while i in range(0,3):
 		if i!=0:
 			print('Would you like to add something else?')
-		inp=input()	
+		inp=input()
 		if inp.lower()=='quit':
 			break
 		results=model.predict([bag_of_words(inp,words)])[0]
