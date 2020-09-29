@@ -65,8 +65,8 @@
 
            <div class="stats ml-auto">
 
-                <i class="material-icons">arrow_upward</i> {% if a.Upvotes==None %}0{% else %}{{a.Upvotes}}{% endif %} &#xB7;
-                <i class="material-icons">arrow_downward</i> {% if a.Downvotes==None %}0{% else %}{{a.Downvotes}}{% endif %}
+                <i class="material-icons upvote_blog" id="blog_upvote:{{a.Blog.id}}">arrow_upward</i> {% if a.Upvotes==None %}0{% else %}{{a.Upvotes}}{% endif %} &#xB7;
+                <i class="material-icons downvote_blog " id="blog_downvote:{{a.Blog.id}}">arrow_downward</i> {% if a.Downvotes==None %}0{% else %}{{a.Downvotes}}{% endif %}
             </div>
         </div>
   <div class="card-footer mt-3 text-muted">
@@ -125,6 +125,58 @@
   $(document).on('click','.image_link',function(){
     show_image();
   });
+  $(document).on('click','.post_comment',function(){
+    var array=this.id.split(':');
+    post_comment(array[1]);
+  });
+  $(document).on('click','.upvote_comment',function(){
+    var array=this.id.split(':');
+    upvote_comment(array[1]);
+  });
+  $(document).on('click','.downvote_comment',function(){
+    var array=this.id.split(':');
+    downvote_comment(array[1]);
+  });
+  $(document).on('click','.upvote_blog',function(){
+    var array=this.id.split(':');
+    upvote_blog(array[1]);
+  });
+  $(document).on('click','.downvote_blog',function(){
+    var array=this.id.split(':');
+    downvote_blog(array[1]);
+  });
+
+  function post_comment(blog_id){
+    var comment=$('.comment_text').val();
+    $.post('./show_blog?post_comment',{blog_id:blog_id,comment:comment},function(data){
+      console.log(data);
+      $('#blog_content').html(data);
+    });
+  }
+
+  function upvote_comment(comment_id){
+    $.post('./show_blog?upvote_comment',{comment_id:comment_id},function(data){
+
+    });
+  }
+
+  function downvote_comment(comment_id){
+    $.post('./show_blog?downvote_comment',{comment_id:comment_id},function(data){
+
+    });
+  }
+
+  function upvote_blog(blog_id){
+    $.post('./show_blog?upvote_blog',{blog_id:blog_id},function(data){
+
+    });
+  }
+
+  function downvote_blog(blog_id){
+    $.post('./show_blog?downvote_blog',{blog_id:blog_id},function(data){
+
+    });
+  }
 
   function show_post(){
     $('#replace').html('<form method="POST" action="./blog?post" class="text-left">      <div class="form-group">        <label  class="bmd-label-floating" for="exampleFormControlInput1">Title</label>        <input type="text" class="form-control" id="exampleFormControlInput1" name="title" placeholder="">      </div>      <div class="form-group">        <label  class="bmd-label-floating" for="exampleFormControlTextarea1">Content</label>        <textarea class="form-control" id="exampleFormControlTextarea1" name="desc" rows="6"></textarea>      </div>    <div class="text-right">    <button type=submit class=" btn btn-success btn-sm">Create Post</button>    </div>    </form>');
