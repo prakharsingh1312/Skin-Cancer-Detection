@@ -15,7 +15,7 @@ from detect import *
 import uuid
 import datetime
 from flask_weasyprint import HTML, render_pdf
-#from script import chat
+from script import *
 
 #Tables
 lang=db.Table('lang_doc',

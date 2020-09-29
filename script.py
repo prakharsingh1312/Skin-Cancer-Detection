@@ -35,7 +35,7 @@ except:
 			docs_x.append(word_single)
 			docs_class.append(intent['tag'])
 		if intent['tag'] not in labels:
-			labels.append(intent['tag']) 
+			labels.append(intent['tag'])
 
 	words=[stemmer.stem(w.lower()) for w in words if w not in '?']
 	words=sorted(list(set(words)))
@@ -83,6 +83,7 @@ except:
 	model.save('model_saved.h5')
 
 def bag_of_words(s,words):
+
 	bag=[0 for _ in range(len(words))]
 	s_words=nltk.word_tokenize(s)
 	s_words=[stemmer.stem(word.lower()) for word in s_words]
@@ -92,45 +93,73 @@ def bag_of_words(s,words):
 			if w==x:
 				bag[i]=1
 	return numpy.array(bag).reshape(-1,len(bag))
+def chatbot_check(message,d):
+	print (message)
+	results=model.predict([bag_of_words(message,words)])[0]
+	'''with open('chatbot.pb','wb') as f:
+								pickle.dump(model,f)'''
+	results_idx=numpy.argmax(results)
 
-def chat():
-	i=0
-	import random
-	print('Please describe the symptoms of your skin disease  ')
-	diseases=[]
-	while i in range(0,3):
-		if i!=0:
-			print('Would you like to add something else?')
-		inp=input()
-		if inp.lower()=='quit':
-			break
-		results=model.predict([bag_of_words(inp,words)])[0]
-		'''with open('chatbot.pb','wb') as f:
-									pickle.dump(model,f)'''
-		results_idx=numpy.argmax(results)
+	if results[results_idx]>0.3:
 
-		if results[results_idx]>0.3:
+		tag=labels[results_idx]
+		with open('intents.json') as file:
+			data=json.load(file)
 
-			tag=labels[results_idx]
-			with open('intents.json') as file:
-				data=json.load(file)
 
-				
-			for trunc in data['intents']:
-				if trunc['tag']==tag:
-					responses=trunc['responses']
-					prefix=trunc['response_pre_string']
-					suffix=trunc['response_post_string']
-			
-			i+=1
-			diseases.append(tag)
-	
-
-			#print(tts(txt))
-		else: print('Did not comprehend.Try again')
-	
-	try:
-		return mode(diseases)
-	except:
-		return diseases[0]
-print(chat())
+		for trunc in data['intents']:
+			if trunc['tag']==tag:
+				responses=trunc['responses']
+				prefix=trunc['response_pre_string']
+				suffix=trunc['response_post_string']
+		d.append(tag)
+		if(len(d)==3):
+			try:
+				data=mode(d)
+			except:
+				data=d[0]
+			return "Prelimnary tests reveals that you might have "+data+".Please note that these results are only based on the symptoms you specified and may not be accurate. Consult a doctor for confirmation.",d
+		else:
+			return "Symptom "+message+ " noted. Would you like to add something else?",d
+	else:
+		return ('Did not comprehend.Please try again')
+# def chat():
+# 	i=0
+# 	import random
+# 	print('Please describe the symptoms of your skin disease  ')
+# 	diseases=[]
+# 	while i in range(0,3):
+# 		if i!=0:
+# 			print('Would you like to add something else?')
+# 		inp=input()
+# 		if inp.lower()=='quit':
+# 			break
+# 		results=model.predict([bag_of_words(inp,words)])[0]
+# 		'''with open('chatbot.pb','wb') as f:
+# 									pickle.dump(model,f)'''
+# 		results_idx=numpy.argmax(results)
+#
+# 		if results[results_idx]>0.3:
+#
+# 			tag=labels[results_idx]
+# 			with open('intents.json') as file:
+# 				data=json.load(file)
+#
+#
+# 			for trunc in data['intents']:
+# 				if trunc['tag']==tag:
+# 					responses=trunc['responses']
+# 					prefix=trunc['response_pre_string']
+# 					suffix=trunc['response_post_string']
+#
+# 			i+=1
+# 			diseases.append(tag)
+#
+#
+# 			#print(tts(txt))
+# 		else: print('Did not comprehend.Try again')
+#
+# 	try:
+# 		return mode(diseases)
+# 	except:
+# 		return diseases[0]
