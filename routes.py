@@ -279,5 +279,18 @@ def blog_page():
 @app.route("/show_blog" , methods=['GET' , 'POST'])
 def show_post_page():
 	if 'id' in request.args:
-		data,comment=show_post(request.args['id'])
-		return render_template('post.html',data=data,comment=comment)
+		data,comment,user_data=show_post(request.args['id'])
+		return render_template('post.html',data=data,comment=comment,user_data=user_data)
+	elif 'post_comment' in request.args:
+		data=post_comment(request.form)
+	elif 'upvote_comment' in request.args:
+		data=react_comment(request.form,1)
+	elif 'downvote_comment' in request.args:
+		data=react_comment(request.form,2)
+	elif 'upvote_blog' in request.args:
+		data=react_blog(request.form,1)
+	elif 'downvote_blog' in request.args:
+		data=react_blog(request.form,2)
+	if data:
+		data,comment,user_data=show_post(request.form['blog_id'])
+		return render_template('post.html',data=data,comment=comment,user_data=user_data)

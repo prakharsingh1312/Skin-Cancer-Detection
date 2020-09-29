@@ -396,10 +396,37 @@ def create_post(p,type,image=""):
 def show_post(id):
 	cupvotes_subq=(db.session.query(CommentReactions.comment_id,db.func.count(CommentReactions.id).label("CUpvotes")).filter(CommentReactions.reaction_type==1).group_by(CommentReactions.comment_id)).subquery()
 	cdownvotes_subq=(db.session.query(CommentReactions.comment_id,db.func.count(CommentReactions.id).label("CDownvotes")).filter(CommentReactions.reaction_type==2).group_by(CommentReactions.comment_id)).subquery()
-	comment=db.session.query(Comment,UserTable,cupvotes_subq.c.CUpvotes,cdownvotes_subq.c.CDownvotes).filter(Comment.blog_id==id).outerjoin(UserTable).outerjoin(cupvotes_subq,cupvotes_subq.c.comment_id==Comment.id).outerjoin(cdownvotes_subq,cdownvotes_subq.c.comment_id==Comment.id)
+	comment=db.session.query(Comment,UserTable,cupvotes_subq.c.CUpvotes,cdownvotes_subq.c.CDownvotes).filter(Comment.blog_id==id).outerjoin(UserTable).outerjoin(cupvotes_subq,cupvotes_subq.c.comment_id==Comment.id).outerjoin(cdownvotes_subq,cdownvotes_subq.c.comment_id==Comment.id).order_by(Comment.time.desc())
 	upvotes_subq=(db.session.query(BlogReactions.blog_id,db.func.count(BlogReactions.id).label("Upvotes")).filter(BlogReactions.reaction_type==1).group_by(BlogReactions.blog_id)).subquery()
 	downvotes_subq=(db.session.query(BlogReactions.blog_id,db.func.count(BlogReactions.id).label("Downvotes")).filter(BlogReactions.reaction_type==2).group_by(BlogReactions.blog_id)).subquery()
 	data=db.session.query(Blog,UserTable,db.func.timediff(db.func.utc_timestamp(),Blog.time).label("timediff"),upvotes_subq.c.Upvotes,downvotes_subq.c.Downvotes).filter(Blog.id==id).outerjoin(UserTable).outerjoin(upvotes_subq,upvotes_subq.c.blog_id==Blog.id).outerjoin(downvotes_subq,downvotes_subq.c.blog_id==Blog.id).first()
-	members = [attr for attr in dir(data[0]) if not callable(getattr(data[0], attr)) and not attr.startswith("__")]
-	print(members)
-	return data,comment
+	user_data=db.session.query(UserTable).filter(UserTable.id==session['user_id']).first()
+	#members = [attr for attr in dir(comment[0]) if not callable(getattr(comment[0], attr)) and not attr.startswith("__")]
+	#print(members)
+	return data,comment,user_data
+
+def post_comment(p):
+	data=Comment(blog_id=p['blog_id'],desc=p['comment'],user_id=session['user_id'])
+	db.session.add(data)
+	db.session.commit()
+	return 1
+
+def react_comment(p,react):
+	if(CommentReactions.query.filter_by(user_id=session['user_id']).count()):
+		data=CommentReactions.query.filter_by(user_id=session['user_id']).first()
+		data.reaction_type=react
+	else:
+		data=CommentReactions(comment_id=p['comment_id'],reaction_type=react,user_id=session['user_id'])
+		db.session.add(data)
+	db.session.commit()
+	return 1
+
+def react_blog(p,react):
+	if(BlogReactions.query.filter_by(user_id=session['user_id']).count()):
+		data=BlogReactions.query.filter_by(user_id=session['user_id']).first()
+		data.reaction_type=react
+	else:
+		data=BlogReactions(blog_id=p['blog_id'],reaction_type=react,user_id=session['user_id'])
+		data.reaction_type=react
+	db.session.commit()
+	return 1
