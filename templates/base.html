@@ -166,7 +166,7 @@ The above copyright notice and this permission notice shall be included in all c
       {% block content %}{% endblock %}
       {% if 'user_id' in session %}
       <div class="chat-box">
-      <div class="chat-closed btn btn-success btn-round btn-sm ">DERMATOS</div>
+      <div class="chat-closed btn btn-success btn-round btn-fab " style="zoom:1.5;"><i class="material-icons">mark_chat_unread</i></div>
       <div class="chat-content hide"id="framechat">
 
 	<div class="content">
@@ -357,7 +357,9 @@ The above copyright notice and this permission notice shall be included in all c
 
         $(".chat-closed").on("click",function(e){
           console.log(2);
+          $(".chat-header,.chat-content").addClass("fade-in");
             $(".chat-header,.chat-content").removeClass("hide");
+
             $(this).addClass("hide");
         });
 
@@ -370,7 +372,10 @@ The above copyright notice and this permission notice shall be included in all c
 if (!$(event.target).closest(".chat-closed,.chat-content").length)  {
 console.log(1);
 $(".chat-header,.chat-content").addClass("hide");
+$(".chat-closed").addClass("fade-in");
 $(".chat-closed").removeClass("hide");
+
+
 }
 });
 
@@ -394,7 +399,7 @@ function newMessage() {
     }
 
 
-	$('<li class="sent"><img src="http://emilcarlsson.se/assets/mikeross.png" alt="" /><p>' + message + '</p></li>').appendTo($('.messages ul'));
+	$('<li class="sent"><img src="/static/img/{% if session["user_role"]==3 %}{{session["image"]}}{% else %}{{session["user_name"]}}.jpg{% endif %}" rel="nofollow" alt="..." ><p>' + message + '</p></li>').appendTo($('.messages ul'));
 	$('.message-input input').val('');
   $('.message-input .emoji-wysiwyg-editor').html('');
 

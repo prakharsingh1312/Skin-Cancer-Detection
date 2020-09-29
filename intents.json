@@ -1,0 +1,61 @@
+{"intents": [
+        {"tag": "Basal Cell Carcinoma",
+         "patterns": ["I have been exposed to sun", "pearly or waxy bump", "pearly bump", "waxy bump", "waxy bump on neck",
+            "pearly bump on neck and face","waxy bump on neck and face","flat, flesh colored or brown scar like lesion",
+            "flat pearly bump on neck and face","flesh colored lesion on neck and face","flesh colored lesion","scar like lesion on face",
+            "scar like lesion on neck and face","bleeding or scabbing sore that heals and returns","bleeding sore","bleeding lesion on face",
+            "bleeding or scabbing sore that heals and returns on neck and face",
+            "sore that doesn’t heal after seven to 10 days","sore that doesn’t heal after seven to 10 days on neck and face",
+            "red patch that may itch, hurt, crust, or bleed easily","pink, red, or white shiny bump",
+            "tan, black, or brown shiny bleeding lesion on neck and face","pink growth with an elevated border and an indented center","symmetrical lesion",
+            "Appearance of a shiny pink, red, pearly, or translucent bump","Pink skin growths or lesions with raised borders that are crusted in the center",
+            "Raised reddish patch of skin that may crust or itch, but is usually not painful","A white, yellow, or waxy area with a poorly defined border that may resemble a scar"],
+         "responses": ["This type of skin cancer also usually appears on the areas of your body most exposed to the sun", 
+            "Basal cell carcinomas tend to be easy to treat", "These growths develop very slowly, making it less likely they’ll spread to other organs or invade muscle, bone, or nerves",
+            "Basal cell carcinoma develops in your basal skin cells","These cells are at the bottom of your epidermis, the outer layer of your skin"],
+         "context_set": "",
+         "response_pre_string":"",
+         "response_post_string":""
+        },
+        {"tag": "Squamous Cell Carcinoma",
+         "patterns": ["scaly, red patches that bleed", "open sores that bleed, crust, and don’t heal", 
+            "tender, raised growths with a center indent that bleeds", "a growth that resembles a wart, but crusts and bleeds", " open sore that causes itching",
+            "scaly red patch that is itching"," firm, red nodule"," firm, red nodule on my hands and face","flat lesion with a scaly, crusted surface",
+            "flat lesion with a scaly, crusted surface on my hands and face","Persistent, scaly red patches with irregular borders that may bleed easily",
+            "Open sore that does not go away for weeks","A raised growth with a rough surface that is indented in the middle",
+            "A wart-like growth"],
+         "responses": ["Most often, squamous cell carcinoma occurs on sun-exposed areas of your body, such as your face, ears and hands",
+          "People with darker skin are more likely to develop squamous cell carcinoma on areas that aren't often exposed to the sun",
+           "Squamous cell carcinoma is also known to feel tender and cause intense itching, which further irritates and inflames your skin",
+            "Left untreated, squamous cell carcinoma can grow larger. In rare cases, these lesions can spread to lymph nodes and other organs","symmetrical lesion"],
+         "context_set": "",
+         "response_pre_string":"",
+         "response_post_string":""
+        },
+        {"tag": "Melanoma",
+         "patterns": ["asymmetrical mole", "Asymmetrical skin lesion", "asymmetrical lesion", "dissimilar lesion","dissimilar mole","dissimilar skin lesion",
+            "mole with ragged raised borders","mole with ragged borders","mole with raised borders","lesion with raised borders","color changing mole",
+            "color variant mole","color evolving lesion","color changing mole","mole that changes color","lesion that is color variant",
+            "large mole on skin","large skin lesion","lesion with large diameter","mole with large diameter",
+            "large brownish spot with darker speckles","mole that changes in color, size or feel or that bleeds","small lesion with an irregular border and portions that appear red, pink, white, blue or blue-black",
+            "painful lesion that itches or burns","Dark lesions on your palms, soles, fingertips or toes, or on mucous membranes lining your mouth, nose, vagina or anus"],
+         "responses":["apply calamine", "cover area with bandage", "use ice to compress itching"],
+
+         "context_set": "",
+         "response_pre_string":"",
+         "response_post_string":""
+        },
+        {"tag": "Acne",
+         "patterns": ["Whiteheads (closed plugged pores)","Whiteheads closed plugged pores","white pores on my skin","closed white open pores",
+            "Blackheads (open plugged pores)","open pores on my nose","open pores on my forehead","Small red, tender bumps (papules)",
+            "Pimples (pustules), which are papules with pus at their tips","pus filled pimples","pimples on my forehead","Large, solid, painful lumps under the skin (nodules)",
+            "Painful, pus-filled lumps under the skin (cystic lesions)","Pimples on my face, forehead, chest, upper back and shoulders."],
+         "responses":["apply calamine", "cover area with bandage", "use ice to compress itching"],
+
+         "context_set": "",
+         "response_pre_string":"",
+         "response_post_string":""
+        }
+        
+   ]
+}
