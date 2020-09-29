@@ -1,3 +1,4 @@
+import os
 import nltk
 from nltk.stem.lancaster import LancasterStemmer
 stemmer=LancasterStemmer()
@@ -18,10 +19,10 @@ def tts(txt):
 
 
 try:
-	with open('data.pickle','rb') as f:
+	with open(os.path.join(os.path.dirname(__file__),'data.pickle'),'rb') as f:
 		words,labels,training,output=pickle.load(f)
 except:
-	with open('intents.json') as file:
+	with open(os.path.join(os.path.dirname(__file__),'intents.json')) as file:
 		data=json.load(file)
 
 	words=[]
@@ -65,11 +66,11 @@ except:
 	training=numpy.array(training)
 	output=numpy.array(output)
 
-	with open('data.pickle','wb') as f:
+	with open(os.path.join(os.path.dirname(__file__),'data.pickle'),'wb') as f:
 		pickle.dump((words,labels,training,output),f)
 
 try:
-	model=keras.models.load_model('model_saved.h5')
+	model=keras.models.load_model(os.path.join(os.path.dirname(__file__),'model_saved.h5'))
 
 except:
 	model = tf.keras.models.Sequential()
