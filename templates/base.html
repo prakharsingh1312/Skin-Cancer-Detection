@@ -404,6 +404,10 @@ function newMessage() {
   $('.message-input .emoji-wysiwyg-editor').html('');
 
 	$('.messages').animate({ scrollTop: $('.messages ul').height() }, "fast");
+  $.post('./chat?message',{message:message},function(data){
+    $('<li class="replies"><img src="./static/img/chatbot.jpg" alt="" /><p>' + data + '</p></li>').appendTo($('.messages ul'));
+    $('.messages').animate({ scrollTop: $('.messages ul').height() }, "fast");
+  });
 };
 
 $('.submit').click(function() {

@@ -114,7 +114,7 @@ def pathology_page():
 				send.append(float(request.form['mpenalty']))
 			send.append(float(request.form['dratio']))
 
-			return "Predicted tumor size is :<b>"+str(tumor_size(send))+"</b>."
+			return "Predicted tumor size is :<b>"+str(tumor_size(send))+" mm</b>."
 		if request.form['submit']=="predict_cancer":
 			res=predict_cancer(upload_file(request.files['file1']),request.form['affected_area'])
 
@@ -294,3 +294,13 @@ def show_post_page():
 	if data:
 		data,comment,user_data=show_post(request.form['blog_id'])
 		return render_template('post.html',data=data,comment=comment,user_data=user_data)
+
+@app.route("/chat" , methods=['GET' , 'POST'])
+def chat_page():
+	if 'diseases' not in session:
+		session['diseases']=[]
+	elif len(session['diseases'])==3:
+		session['diseases']=[]
+	if 'message' in request.args:
+		data,session['diseases']=chatbot_check(request.form['message'],session['diseases'])
+		return data
