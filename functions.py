@@ -15,6 +15,7 @@ from detect import *
 import uuid
 import datetime
 from flask_weasyprint import HTML, render_pdf
+#from script import chat
 
 #Tables
 lang=db.Table('lang_doc',
@@ -191,6 +192,7 @@ def login(email , password):
 			session['user_id']=user.id
 			session['user_name']=user.name
 			session['user_role']=user.role
+			session['image']=user.image
 			return 1
 		else:
 			return 0
@@ -273,7 +275,7 @@ def predict_malig_type(image):
 	resnet=load_learner(os.path.join(os.path.dirname(__file__),'large_files/'),'resnet50.pkl')
 	vgg16=load_learner(os.path.join(os.path.dirname(__file__),'large_files/'),'vgg16bn.pkl')
 	img=open_image(os.path.join(os.path.dirname(__file__),'static/uploads/'+image))
-	res['probability']=str(model.predict(img)[-1].numpy()[1])
+	res['probability']=str(round(((model.predict(img)[-1].numpy()[1])*100),2))
 	tens1=densenet.predict(img)[-1].numpy()
 	tens2=resnet.predict(img)[-1].numpy()
 	tens3=vgg16.predict(img)[-1].numpy()
