@@ -17,10 +17,12 @@ def tts(txt):
 	engine.say(txt)
 	engine.runAndWait()
 
-
+#print(os.path.join(os.path.dirname(__file__),'model_saved.h5'))
 try:
+
 	with open(os.path.join(os.path.dirname(__file__),'data.pickle'),'rb') as f:
 		words,labels,training,output=pickle.load(f)
+		print (words)
 except:
 	with open(os.path.join(os.path.dirname(__file__),'intents.json')) as file:
 		data=json.load(file)
@@ -72,6 +74,7 @@ except:
 try:
 	model=keras.models.load_model(os.path.join(os.path.dirname(__file__),'model_saved.h5'))
 
+
 except:
 	model = tf.keras.models.Sequential()
 	model.add(tf.keras.Input(shape=len(training[0])))
@@ -81,7 +84,7 @@ except:
 	model.add(tf.keras.layers.Dense(len(output[0])))
 	model.compile(loss='mean_squared_error',optimizer='adam',metrics=['accuracy'])
 	model.fit(training,output,epochs=100,verbose=1)
-	model.save('model_saved.h5')
+	model.save(os.path.join(os.path.dirname(__file__),'model_saved.h5'))
 
 def bag_of_words(s,words):
 
@@ -95,8 +98,9 @@ def bag_of_words(s,words):
 				bag[i]=1
 	return numpy.array(bag).reshape(-1,len(bag))
 def chatbot_check(message,d):
-	print (message)
+
 	results=model.predict([bag_of_words(message,words)])[0]
+
 	'''with open('chatbot.pb','wb') as f:
 								pickle.dump(model,f)'''
 	results_idx=numpy.argmax(results)
@@ -104,7 +108,8 @@ def chatbot_check(message,d):
 	if results[results_idx]>0.3:
 
 		tag=labels[results_idx]
-		with open('intents.json') as file:
+		with open(os.path.join(os.path.dirname(__file__),'intents.json')) as file:
+			print('loaded')
 			data=json.load(file)
 
 
