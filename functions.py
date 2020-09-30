@@ -44,7 +44,7 @@ class UserTable(db.Model):
 	gender=db.Column('gender' , db.String(1))
 	dob=db.Column('dob', db.Date)
 	password=db.Column('password',db.String(100))
-	image=db.Column('image' , db.String(100))
+	image=db.Column('image' , db.String(100),default="user.jpg")
 	locality_id=db.Column('locality_id' , db.Integer,db.ForeignKey('locality_table.id'))
 	role=db.Column('role',db.Integer)
 	user_activated=db.Column('user_activated',db.Integer)
