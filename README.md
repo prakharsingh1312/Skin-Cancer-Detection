@@ -30,7 +30,7 @@
 > Naman Tuli – Email: namantuli2000@gmail.com -
 [GitHub](https://github.com/namantuli18)
 
-> Prakhar Singh – Eamil: prakharsingh13@gmail.com -
+> Prakhar Singh – Email: prakharsingh13@gmail.com -
 [GitHub](https://github.com/prakharsingh1312)
 
 ## Contributing
