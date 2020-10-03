@@ -24,6 +24,29 @@
 
 ![](header.png)
 
+## Installation
+
+OS X & Linux:
+
+```sh
+ git clone https://github.com/prakharsingh1312/Skin-Cancer-Detection.git SCD
+ cd SCD
+ virtualenv venv
+ source venv/bin/activate
+ pip3 install -r requirements.txt
+ python3 app.py
+```
+
+Windows (Not Recommended as Pytorch has problems in installing):
+
+```sh
+git clone https://github.com/prakharsingh1312/Skin-Cancer-Detection.git SCD
+cd SCD
+virtualenv venv
+./venv/Scripts/activate
+pip3 install -r requirements.txt
+python3 app.py
+```
 
 ## Meta
 
