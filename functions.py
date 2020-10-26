@@ -115,7 +115,7 @@ class Prescriptions(db.Model):
 	cancer=db.Column('cancer',db.String(10))
 	cancer_probability=db.Column('cancer_probability',db.Float)
 	malignant_probability=db.Column('malignant_probability',db.Float)
-	type_prediction=db.Column('type',db.Integer,db.ForeignKey('cancer_types.id'))
+	type_prediction=db.Column('type',db.Integer,db.ForeignKey('cancer_types.id'),default=0)
 	time_of_examination=db.Column('time_of_examination',db.DateTime, default=datetime.datetime.utcnow)
 	appointments=db.relationship('Appointments',backref='prescription')
 
