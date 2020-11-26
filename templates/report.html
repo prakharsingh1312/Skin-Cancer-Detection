@@ -27,7 +27,7 @@
 
 </style>
 </head>
-<body style="font-family: 'Montserrat', sans-serif;">
+<body style="font-family: 'Montserrat', sans-serif;" id="body">
   <div class="row" style="width:210mm;" >
     <div width="1137px">
   <img src="../static/img/header.png" >
@@ -38,8 +38,8 @@
   Gender:<span class="ml-1"style="font-weight: 600;">{{gender[user_data.gender]}}</span><br>
   Location:<span class="ml-1"style="font-weight: 600;"></span><br>
   </div>
-  <div class="float-right mr-0">
-    <img src="./static/img/{{user_data.image}}" style="max-width:15em;" class="img-thumbnail mr-0">
+  <div class="">
+    <img src="./static/img/{{user_data.image}}" style="max-width:15em;" class="img-thumbnail">
 </div>
 </div>
 <div class="row">
@@ -50,8 +50,8 @@
   Skin Cancer Type Diagnosed:<span class="ml-1"style="font-weight: 600;">{{data.CancerTypes.type}}</span><br>
   Skin Cancer Malignant Probability:<span class="ml-1"style="font-weight: 600;">{{data.Prescriptions.malignant_probability}}</span><br>
   </div>
-  <div class="float-right mt-5 mr-0">
-    <img src="./static/uploads/{{data.Prescriptions.image}}" style="max-width:15em;" class="img-thumbnail mr-0">
+  <div class="mt-5">
+    <img src="./static/uploads/output/{{data.Prescriptions.image}}" style="max-width:15em;" class="img-thumbnail ">
 </div>
 </div>
 {% if app_id %}<div class="row">
@@ -84,4 +84,13 @@
 </div>
 </div>
 </body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script type="text/javascript">
+
+$(document).on('click','#body',function () {
+   javascript:window.print();
+});
+
+</script>
 </html>

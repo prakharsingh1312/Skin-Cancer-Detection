@@ -1,0 +1,35 @@
+2020-11-26 04:52:56.279838: W tensorflow/stream_executor/platform/default/dso_loader.cc:59] Could not load dynamic library 'libcudart.so.10.1'; dlerror: libcudart.so.10.1: cannot open shared object file: No such file or directory
+2020-11-26 04:52:56.279919: I tensorflow/stream_executor/cuda/cudart_stub.cc:29] Ignore above cudart dlerror if you do not have a GPU set up on your machine.
+2020-11-26 04:52:58.242195: W tensorflow/stream_executor/platform/default/dso_loader.cc:59] Could not load dynamic library 'libcuda.so.1'; dlerror: libcuda.so.1: cannot open shared object file: No such file or directory
+2020-11-26 04:52:58.242286: W tensorflow/stream_executor/cuda/cuda_driver.cc:312] failed call to cuInit: UNKNOWN ERROR (303)
+2020-11-26 04:52:58.242366: I tensorflow/stream_executor/cuda/cuda_diagnostics.cc:156] kernel driver does not appear to be running on this host (instance-1): /proc/driver/nvidia/version does not exist
+2020-11-26 04:52:58.243232: I tensorflow/core/platform/cpu_feature_guard.cc:142] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN)to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2020-11-26 04:52:58.253370: I tensorflow/core/platform/profile_utils/cpu_utils.cc:104] CPU Frequency: 2300000000 Hz
+2020-11-26 04:52:58.253679: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x89504a0 initialized for platform Host (this does not guarantee that XLA will be used). Devices:
+2020-11-26 04:52:58.253704: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Host, Default Version
+['(', ')', ',', '.', '10', 'a', 'aft', 'an', 'and', 'appear', 'ar', 'are', 'asymmet', 'at', 'away', 'back', 'been', 'black', 'blackhead', 'blee', 'blu', 'blue-black', 'bord', 'brown', 'bump', 'burn', 'but', 'caus', 'cent', 'chang', 'chest', 'clos', 'col', 'crust', 'cyst', 'dark', 'day', 'defin', 'diamet', 'dissimil', 'doe', 'doesn', 'don', 'easy', 'elev', 'evolv', 'expos', 'fac', 'feel', 'fil', 'fingertip', 'firm', 'flat', 'flesh', 'for', 'forehead', 'go', 'grow', 'growth', 'hand', 'hav', 'heal', 'hurt', 'i', 'in', 'ind', 'irregul', 'is', 'itch', 'larg', 'les', 'lik', 'lin', 'lump', 'may', 'membr', 'middl', 'mol', 'mou', 'muc', 'my', 'neck', 'nod', 'nos', 'not', 'of', 'on', 'op', 'or', 'pain', 'palm', 'pap', 'patch', 'pear', 'persist', 'pimpl', 'pink', 'plug', 'poor', 'por', 'port', 'pus', 'pus-filled', 'pust', 'rag', 'rais', 'red', 'resembl', 'return', 'rough', 'sca', 'scab', 'scar', 'sev', 'shiny', 'should', 'siz', 'skin', 'smal', 'sol', 'solid', 'sor', 'speckl', 'spot', 'sun', 'surfac', 'symmet', 't', 'tan', 'tend', 'that', 'the', 'their', 'tip', 'to', 'toe', 'transluc', 'und', 'up', 'us', 'vagin', 'vary', 'wart', 'wart-like', 'waxy', 'week', 'which', 'whit', 'whitehead', 'with', 'yellow', 'yo', '’']
+ * Serving Flask app "config" (lazy loading)
+ * Environment: production
+   WARNING: This is a development server. Do not use it in a production deployment.
+   Use a production WSGI server instead.
+ * Debug mode: on
+/var/www/SkinCancerDetection/SkinCancerDetection/venv/lib/python3.6/site-packages/flask_sqlalchemy/__init__.py:834: FSADeprecationWarning: SQLALCHEMY_TRACK_MODIFICATIONS adds significant overhead and will be disabled by default in the future.  Set it to True or False to suppress this warning.
+  'SQLALCHEMY_TRACK_MODIFICATIONS adds significant overhead and '
+ * Running on http://0.0.0.0:8080/ (Press CTRL+C to quit)
+ * Restarting with stat
+2020-11-26 04:53:01.258020: W tensorflow/stream_executor/platform/default/dso_loader.cc:59] Could not load dynamic library 'libcudart.so.10.1'; dlerror: libcudart.so.10.1: cannot open shared object file: No such file or directory
+2020-11-26 04:53:01.258079: I tensorflow/stream_executor/cuda/cudart_stub.cc:29] Ignore above cudart dlerror if you do not have a GPU set up on your machine.
+2020-11-26 04:53:02.525682: W tensorflow/stream_executor/platform/default/dso_loader.cc:59] Could not load dynamic library 'libcuda.so.1'; dlerror: libcuda.so.1: cannot open shared object file: No such file or directory
+2020-11-26 04:53:02.525739: W tensorflow/stream_executor/cuda/cuda_driver.cc:312] failed call to cuInit: UNKNOWN ERROR (303)
+2020-11-26 04:53:02.525760: I tensorflow/stream_executor/cuda/cuda_diagnostics.cc:156] kernel driver does not appear to be running on this host (instance-1): /proc/driver/nvidia/version does not exist
+2020-11-26 04:53:02.526008: I tensorflow/core/platform/cpu_feature_guard.cc:142] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN)to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2020-11-26 04:53:02.533116: I tensorflow/core/platform/profile_utils/cpu_utils.cc:104] CPU Frequency: 2300000000 Hz
+2020-11-26 04:53:02.533262: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x75dfda0 initialized for platform Host (this does not guarantee that XLA will be used). Devices:
+2020-11-26 04:53:02.533278: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Host, Default Version
+/var/www/SkinCancerDetection/SkinCancerDetection/venv/lib/python3.6/site-packages/flask_sqlalchemy/__init__.py:834: FSADeprecationWarning: SQLALCHEMY_TRACK_MODIFICATIONS adds significant overhead and will be disabled by default in the future.  Set it to True or False to suppress this warning.
+  'SQLALCHEMY_TRACK_MODIFICATIONS adds significant overhead and '
+ * Debugger is active!
+ * Debugger PIN: 801-276-697
+162.158.167.193 - - [26/Nov/2020 04:53:13] "[37mGET /report?pres_id=59 HTTP/1.1[0m" 200 -
