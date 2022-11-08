@@ -48,7 +48,7 @@ murmurhash==1.0.2
 mysqlclient==2.0.1
 nltk==3.5
 numexpr==2.7.1
-numpy==1.18.5
+numpy==1.22.2
 nvidia-ml-py3==7.352.0
 oauthlib==3.1.0
 opencv-python==4.4.0.40
@@ -91,7 +91,7 @@ torch==1.6.0
 torchvision==0.7.0
 tqdm==4.48.2
 typing-extensions==3.7.4.3
-urllib3==1.25.10
+urllib3==1.26.5
 wasabi==0.7.1
 WeasyPrint==51
 webencodings==0.5.1
