@@ -24,7 +24,7 @@ fastprogress==0.2.5
 Flask==1.1.2
 Flask-SQLAlchemy==2.4.4
 Flask-WeasyPrint==0.6
-future==0.18.2
+future==0.18.3
 gast==0.3.3
 google-auth==1.22.0
 google-auth-oauthlib==0.4.1
