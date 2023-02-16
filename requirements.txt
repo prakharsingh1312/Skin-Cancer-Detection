@@ -95,7 +95,7 @@ urllib3==1.25.10
 wasabi==0.7.1
 WeasyPrint==51
 webencodings==0.5.1
-Werkzeug==1.0.1
+Werkzeug==2.2.3
 wrapt==1.12.1
 yarl==1.6.0
 zipp==3.1.0
