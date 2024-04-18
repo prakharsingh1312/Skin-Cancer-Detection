@@ -1,5 +1,5 @@
 absl-py==0.10.0
-aiohttp==3.6.2
+aiohttp==3.9.4
 astunparse==1.6.3
 async-timeout==3.0.1
 attrs==20.2.0
@@ -87,7 +87,7 @@ termcolor==1.1.0
 thinc==7.4.1
 threadpoolctl==2.1.0
 tinycss2==1.0.2
-torch==1.6.0
+torch==2.2.0
 torchvision==0.7.0
 tqdm==4.48.2
 typing-extensions==3.7.4.3
